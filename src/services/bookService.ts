@@ -77,8 +77,7 @@ class BookGenerationService {
     defaultGenerationMode: 'stellar',
     defaultLanguage: 'en',
     moduleContextMode: 'summary',
-    moduleContextSummaryWords: 300,
-    fullContextModuleLimit: 3
+    moduleContextSummaryWords: 300
   };
 
   private onProgressUpdate?: (bookId: string, updates: Partial<BookProject>) => void;
@@ -1298,21 +1297,34 @@ Now take this input and roast it into a masterpiece.`;
   }
 
   private buildRoadmapPrompt(session: BookSession): string {
+    const isFullContextMode = this.settings.moduleContextMode === 'full';
+    const preferredModuleCount = Math.max(5, Math.min(8, session.preferredModuleCount || 6));
+
     if (session.generationMode === 'blackhole') {
-      if (session.language === 'hi' || session.language === 'mr') {
-        return desiPromptService.buildRoadmapPrompt(session);
-      }
-      return streetPromptService.buildRoadmapPrompt(session);
+      const basePrompt = (session.language === 'hi' || session.language === 'mr')
+        ? desiPromptService.buildRoadmapPrompt(session)
+        : streetPromptService.buildRoadmapPrompt(session);
+
+      if (!isFullContextMode) return basePrompt;
+
+      return `${basePrompt}
+
+CRITICAL OVERRIDE: Return EXACTLY ${preferredModuleCount} modules in the JSON array. Do not exceed or reduce this count.`;
     }
 
     const reasoningPrompt = session.reasoning
-      ? `\n- Reasoning/Motivation for the book: ${session.reasoning}`
+      ? `
+- Reasoning/Motivation for the book: ${session.reasoning}`
       : '';
+
+    const moduleCountInstruction = isFullContextMode
+      ? `- Generate EXACTLY ${preferredModuleCount} modules. Keep scope tight and coherent so full-context chapter generation remains stable.`
+      : '- Generate a suitable number of modules, with a minimum of 8. The final number should be based on the complexity and scope of the learning goal.';
 
     return `Create a comprehensive learning roadmap for: "${session.goal}"
   
   Requirements:
-  - Generate a suitable number of modules, with a minimum of 8. The final number should be based on the complexity and scope of the learning goal.
+  ${moduleCountInstruction}
   - Each module should have a clear title and 3-5 specific learning objectives
   - Estimate realistic reading/study time for each module
   - Target audience: ${session.targetAudience || 'general learners'}
@@ -1346,6 +1358,13 @@ Now take this input and roast it into a masterpiece.`;
     }
 
     const roadmap = JSON.parse(jsonMatch[0]);
+
+    if (this.settings.moduleContextMode === 'full') {
+      const preferredModuleCount = Math.max(5, Math.min(8, session.preferredModuleCount || 6));
+      if (Array.isArray(roadmap.modules) && roadmap.modules.length > preferredModuleCount) {
+        roadmap.modules = roadmap.modules.slice(0, preferredModuleCount);
+      }
+    }
 
     if (!roadmap.modules || !Array.isArray(roadmap.modules)) {
       console.error('[ROADMAP] Invalid roadmap - missing modules array');
@@ -1459,10 +1478,7 @@ Now take this input and roast it into a masterpiece.`;
     if (isFirstModule || previousModules.length === 0) return '';
 
     if (this.settings.moduleContextMode === 'full') {
-      const fullContextModuleLimit = Math.max(1, Math.min(8, this.settings.fullContextModuleLimit || 3));
-      const contextModules = previousModules.slice(-fullContextModuleLimit);
-
-      return `\n\nPREVIOUS MODULES CONTEXT (Full • last ${contextModules.length} module${contextModules.length > 1 ? 's' : ''}):\n${contextModules
+      return `\n\nPREVIOUS MODULES CONTEXT (Full • complete history):\n${previousModules
         .map((module, index) => [`\n### Module ${index + 1}: ${module.title}`, module.content].join('\n'))
         .join('\n\n')}`;
     }
@@ -1491,8 +1507,7 @@ Now take this input and roast it into a masterpiece.`;
           moduleIndex,
           totalModules,
           this.settings.moduleContextMode,
-          this.settings.moduleContextSummaryWords,
-          this.settings.fullContextModuleLimit
+          this.settings.moduleContextSummaryWords
         );
       }
       return streetPromptService.buildModulePrompt(
@@ -1503,8 +1518,7 @@ Now take this input and roast it into a masterpiece.`;
         moduleIndex,
         totalModules,
         this.settings.moduleContextMode,
-        this.settings.moduleContextSummaryWords,
-        this.settings.fullContextModuleLimit
+        this.settings.moduleContextSummaryWords
       );
     }
 

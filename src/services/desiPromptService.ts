@@ -60,8 +60,7 @@ export const desiPromptService = {
     moduleIndex: number,
     totalModules: number,
     contextMode: 'full' | 'summary' = 'full',
-    contextSummaryWords = 300,
-    fullContextModuleLimit = 3
+    contextSummaryWords = 300
   ): string {
     const summarize = (content: string): string => {
       if (contextMode !== 'summary') return content;
@@ -70,12 +69,8 @@ export const desiPromptService = {
       return `${words.slice(0, contextSummaryWords).join(' ')}\n\n[Summary truncated from ${words.length} words to ${contextSummaryWords} words]`;
     };
 
-    const scopedModules = contextMode === 'full'
-      ? previousModules.slice(-Math.max(1, Math.min(8, fullContextModuleLimit || 3)))
-      : previousModules;
-
     const contextSummary = !isFirstModule && previousModules.length > 0
-      ? `\n\nPuraani baatein (${contextMode === 'summary' ? `Summarized • ~${contextSummaryWords} shabd/module` : `Full Context • last ${scopedModules.length} modules`}):\n${scopedModules
+      ? `\n\nPuraani baatein (${contextMode === 'summary' ? `Summarized • ~${contextSummaryWords} shabd/module` : `Full Context • last ${previousModules.length} modules`}):\n${previousModules
         .map((module, index) =>
           [`\n### Module ${index + 1}: ${module.title}`, summarize(module.content)]
             .join('\n')

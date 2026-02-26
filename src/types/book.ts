@@ -72,6 +72,7 @@ export interface BookSession {
   };
   reasoning?: string; // Optional field for the book's rationale
   generationMode: 'stellar' | 'blackhole';
+  preferredModuleCount?: number;
 }
 
 export interface ReadingBookmark {

@@ -56,11 +56,7 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
 
   const handleSave = () => {
     setIsSaving(true);
-    const sanitizedSettings: APISettings = {
-      ...localSettings,
-      fullContextModuleLimit: Math.max(1, Math.min(8, localSettings.fullContextModuleLimit || 3)),
-    };
-    onSaveSettings(sanitizedSettings);
+    onSaveSettings(localSettings);
     // In a real app, you might wait for an API response before closing
     // For local settings, we can close immediately or after a small delay
     setTimeout(() => {
@@ -510,21 +506,6 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
                           <span className="font-bold text-sm">Full content</span>
                         </button>
                       </div>
-                      {localSettings.moduleContextMode === 'full' && (
-                        <div className="space-y-2">
-                          <label className="text-[11px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">Max previous modules in full context (Required)</label>
-                          <select
-                            value={localSettings.fullContextModuleLimit || 3}
-                            onChange={(e) => setLocalSettings((p: APISettings) => ({ ...p, fullContextModuleLimit: Number(e.target.value) }))}
-                            className="w-full bg-gray-50 dark:bg-white/[0.03] border border-amber-300/50 dark:border-amber-500/30 rounded-lg py-2 px-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500/20"
-                          >
-                            {[1, 2, 3, 4, 5, 6, 7, 8].map((count) => (
-                              <option key={count} value={count}>{count} module{count > 1 ? 's' : ''}</option>
-                            ))}
-                          </select>
-                          <p className="text-[10px] text-amber-600 dark:text-amber-400 italic">Keep this low to avoid 429 API errors (recommended: 2-4 modules).</p>
-                        </div>
-                      )}
                       <p className="text-[10px] text-gray-400 dark:text-gray-500 italic">Compact mode uses the last 2 modules with short snippets. Full mode includes full previous module content and can hit rate limits if the module count is high.</p>
                     </div>
                   </section>
@@ -728,21 +709,6 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
                           <span className="font-bold text-sm">Full content</span>
                         </button>
                       </div>
-                      {localSettings.moduleContextMode === 'full' && (
-                        <div className="space-y-2">
-                          <label className="text-[11px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">Max previous modules in full context (Required)</label>
-                          <select
-                            value={localSettings.fullContextModuleLimit || 3}
-                            onChange={(e) => setLocalSettings((p: APISettings) => ({ ...p, fullContextModuleLimit: Number(e.target.value) }))}
-                            className="w-full bg-gray-50 dark:bg-white/[0.03] border border-amber-300/50 dark:border-amber-500/30 rounded-lg py-2 px-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500/20"
-                          >
-                            {[1, 2, 3, 4, 5, 6, 7, 8].map((count) => (
-                              <option key={count} value={count}>{count} module{count > 1 ? 's' : ''}</option>
-                            ))}
-                          </select>
-                          <p className="text-[10px] text-amber-600 dark:text-amber-400 italic">Keep this low to avoid 429 API errors (recommended: 2-4 modules).</p>
-                        </div>
-                      )}
                       <p className="text-[10px] text-gray-400 dark:text-gray-500 italic">Compact mode uses the last 2 modules with short snippets. Full mode includes full previous module content and can hit rate limits if the module count is high.</p>
                     </div>
                   </section>
@@ -784,21 +750,6 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
                           <span className="font-bold text-sm">Full content</span>
                         </button>
                       </div>
-                      {localSettings.moduleContextMode === 'full' && (
-                        <div className="space-y-2">
-                          <label className="text-[11px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">Max previous modules in full context (Required)</label>
-                          <select
-                            value={localSettings.fullContextModuleLimit || 3}
-                            onChange={(e) => setLocalSettings((p: APISettings) => ({ ...p, fullContextModuleLimit: Number(e.target.value) }))}
-                            className="w-full bg-gray-50 dark:bg-white/[0.03] border border-amber-300/50 dark:border-amber-500/30 rounded-lg py-2 px-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500/20"
-                          >
-                            {[1, 2, 3, 4, 5, 6, 7, 8].map((count) => (
-                              <option key={count} value={count}>{count} module{count > 1 ? 's' : ''}</option>
-                            ))}
-                          </select>
-                          <p className="text-[10px] text-amber-600 dark:text-amber-400 italic">Keep this low to avoid 429 API errors (recommended: 2-4 modules).</p>
-                        </div>
-                      )}
                       <p className="text-[10px] text-gray-400 dark:text-gray-500 italic">Compact mode uses the last 2 modules with short snippets. Full mode includes full previous module content and can hit rate limits if the module count is high.</p>
                     </div>
                   </section>

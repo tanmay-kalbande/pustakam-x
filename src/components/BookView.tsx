@@ -1183,6 +1183,7 @@ const HomeView = ({
   isEnhancing,
   localIsGenerating,
   onOpenSettings,
+  moduleContextMode,
 }: {
   onNewBook: () => void;
   onShowList: () => void;
@@ -1198,6 +1199,7 @@ const HomeView = ({
   isEnhancing: boolean;
   localIsGenerating: boolean;
   onOpenSettings: () => void;
+  moduleContextMode: 'full' | 'summary';
 }) => (
   <div
     className={`flex-1 flex flex-col items-center px-6 pb-12 w-full transition-all duration-500 ${showAdvanced ? 'min-h-screen overflow-y-auto pt-24' : 'h-screen overflow-hidden pt-20'
@@ -1397,6 +1399,36 @@ const HomeView = ({
               />
             </div>
           </div>
+
+
+          {moduleContextMode === 'full' && (
+            <div className="mb-4 p-4 rounded-xl border border-amber-500/30 bg-amber-500/5">
+              <label className="block text-sm font-semibold mb-2 text-[var(--color-text-primary)]">
+                Roadmap Module Count (Full Context)
+              </label>
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setFormData((p) => ({ ...p, preferredModuleCount: Math.max(5, (p.preferredModuleCount || 6) - 1) }))}
+                  className="h-10 w-10 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-text-primary)] text-xl font-bold"
+                >
+                  -
+                </button>
+                <div className="h-10 min-w-[88px] px-4 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] flex items-center justify-center font-bold text-[var(--color-text-primary)]">
+                  {formData.preferredModuleCount || 6}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setFormData((p) => ({ ...p, preferredModuleCount: Math.min(8, (p.preferredModuleCount || 6) + 1) }))}
+                  className="h-10 w-10 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-text-primary)] text-xl font-bold"
+                >
+                  +
+                </button>
+                <span className="text-xs text-amber-500 font-semibold">Range: 5-8 modules</span>
+              </div>
+              <p className="mt-2 text-[11px] text-amber-500/90">In Full Context mode, fewer modules helps avoid 429 errors and keeps continuity strong.</p>
+            </div>
+          )}
 
           {/* Structure Preferences */}
           <div>
@@ -1738,6 +1770,7 @@ export function BookView({
       includePracticalExercises: false,
       includeQuizzes: false,
     },
+    preferredModuleCount: 6,
   });
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState('');
@@ -1867,6 +1900,7 @@ export function BookView({
         includePracticalExercises: false,
         includeQuizzes: false,
       },
+      preferredModuleCount: 6,
     });
     setShowAdvanced(false);
   };
@@ -2044,7 +2078,8 @@ export function BookView({
           complexityLevel: enhanced.complexityLevel,
           reasoning: enhanced.reasoning || '',
           generationMode: formData.generationMode,
-          preferences: enhanced.preferences
+          preferences: enhanced.preferences,
+          preferredModuleCount: formData.preferredModuleCount || 6
         });
 
         // showToast('Idea Refined! ✨ Review and adjust as needed.', 'success');
@@ -2073,6 +2108,7 @@ export function BookView({
         isEnhancing={isEnhancing}
         localIsGenerating={localIsGenerating}
         onOpenSettings={onOpenSettings}
+        moduleContextMode={settings?.moduleContextMode || 'summary'}
       />
     );
   }
@@ -2106,7 +2142,8 @@ export function BookView({
           complexityLevel: enhanced.complexityLevel,
           reasoning: enhanced.reasoning || '',
           generationMode: formData.generationMode,
-          preferences: enhanced.preferences
+          preferences: enhanced.preferences,
+          preferredModuleCount: formData.preferredModuleCount || 6
         });
 
         // showToast('Idea Refined! ✨ Review and adjust as needed.', 'success');
@@ -2275,6 +2312,35 @@ export function BookView({
                     rows={3}
                   />
                 </div>
+                {moduleContextMode === 'full' && (
+                  <div>
+                    <label className="block text-sm font-semibold mb-2 text-[var(--color-text-primary)]">
+                      Roadmap Module Count (Full Context)
+                    </label>
+                    <div className="flex items-center gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setFormData((p) => ({ ...p, preferredModuleCount: Math.max(5, (p.preferredModuleCount || 6) - 1) }))}
+                        className="h-10 w-10 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-text-primary)] text-xl font-bold"
+                      >
+                        -
+                      </button>
+                      <div className="h-10 min-w-[88px] px-4 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] flex items-center justify-center font-bold text-[var(--color-text-primary)]">
+                        {formData.preferredModuleCount || 6}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setFormData((p) => ({ ...p, preferredModuleCount: Math.min(8, (p.preferredModuleCount || 6) + 1) }))}
+                        className="h-10 w-10 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-text-primary)] text-xl font-bold"
+                      >
+                        +
+                      </button>
+                      <span className="text-xs text-amber-500 font-semibold">5-8</span>
+                    </div>
+                    <p className="mt-2 text-[11px] text-amber-500/90">Keep this low in Full Context mode to reduce 429 API errors.</p>
+                  </div>
+                )}
+
                 <div>
                   <label className="block text-sm font-semibold mb-3 text-[var(--color-text-primary)]">
                     Structure Preferences
