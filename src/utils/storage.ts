@@ -26,6 +26,7 @@ const defaultSettings: APISettings = {
   defaultLanguage: 'en',
   moduleContextMode: 'summary',
   moduleContextSummaryWords: 300,
+  fullContextModuleLimit: 3,
 };
 
 // Valid providers list

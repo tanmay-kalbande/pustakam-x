@@ -56,7 +56,11 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
 
   const handleSave = () => {
     setIsSaving(true);
-    onSaveSettings(localSettings);
+    const sanitizedSettings: APISettings = {
+      ...localSettings,
+      fullContextModuleLimit: Math.max(1, Math.min(8, localSettings.fullContextModuleLimit || 3)),
+    };
+    onSaveSettings(sanitizedSettings);
     // In a real app, you might wait for an API response before closing
     // For local settings, we can close immediately or after a small delay
     setTimeout(() => {
@@ -281,7 +285,7 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
                 </div>
                 <nav className="flex md:flex-col space-x-1 md:space-x-0 md:space-y-1 shrink-0">
                   {[
-                    { id: 'personality', label: 'Persona & Identity', icon: Sparkles },
+                    { id: 'personality', label: 'Generation & Identity', icon: Sparkles },
                     { id: 'keys', label: 'API Keys', icon: Key },
                     { id: 'data', label: 'Data & Backup', icon: Database },
                     { id: 'about', label: 'About', icon: Cpu },
@@ -351,8 +355,8 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
               {activeTab === 'personality' && (
                 <div className="space-y-8">
                   <header>
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">Persona & Identity</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Customize Pustakam's personality and appearance.</p>
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">Generation & Identity</h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Customize generation behavior, context strategy, and appearance.</p>
                   </header>
 
                   <section className="space-y-6">
@@ -495,7 +499,7 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
                             ? (theme === 'light' ? 'bg-white text-orange-600 shadow-md ring-1 ring-black/5' : 'bg-orange-500/20 text-orange-300 shadow-md ring-1 ring-white/10')
                             : 'text-gray-500 hover:text-gray-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
                         >
-                          <span className="font-bold text-sm">Summarized (~300 words)</span>
+                          <span className="font-bold text-sm">Compact (last 2 modules)</span>
                         </button>
                         <button
                           onClick={() => setLocalSettings((p: APISettings) => ({ ...p, moduleContextMode: 'full' }))}
@@ -506,7 +510,22 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
                           <span className="font-bold text-sm">Full content</span>
                         </button>
                       </div>
-                      <p className="text-[10px] text-gray-400 dark:text-gray-500 italic">Use summarized context to reduce token usage and rate-limit pressure. Full mode sends entire previous modules for maximum continuity.</p>
+                      {localSettings.moduleContextMode === 'full' && (
+                        <div className="space-y-2">
+                          <label className="text-[11px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">Max previous modules in full context (Required)</label>
+                          <select
+                            value={localSettings.fullContextModuleLimit || 3}
+                            onChange={(e) => setLocalSettings((p: APISettings) => ({ ...p, fullContextModuleLimit: Number(e.target.value) }))}
+                            className="w-full bg-gray-50 dark:bg-white/[0.03] border border-amber-300/50 dark:border-amber-500/30 rounded-lg py-2 px-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500/20"
+                          >
+                            {[1, 2, 3, 4, 5, 6, 7, 8].map((count) => (
+                              <option key={count} value={count}>{count} module{count > 1 ? 's' : ''}</option>
+                            ))}
+                          </select>
+                          <p className="text-[10px] text-amber-600 dark:text-amber-400 italic">Keep this low to avoid 429 API errors (recommended: 2-4 modules).</p>
+                        </div>
+                      )}
+                      <p className="text-[10px] text-gray-400 dark:text-gray-500 italic">Compact mode uses the last 2 modules with short snippets. Full mode includes full previous module content and can hit rate limits if the module count is high.</p>
                     </div>
                   </section>
                 </div>
@@ -698,7 +717,7 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
                             ? (theme === 'light' ? 'bg-white text-orange-600 shadow-md ring-1 ring-black/5' : 'bg-orange-500/20 text-orange-300 shadow-md ring-1 ring-white/10')
                             : 'text-gray-500 hover:text-gray-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
                         >
-                          <span className="font-bold text-sm">Summarized (~300 words)</span>
+                          <span className="font-bold text-sm">Compact (last 2 modules)</span>
                         </button>
                         <button
                           onClick={() => setLocalSettings((p: APISettings) => ({ ...p, moduleContextMode: 'full' }))}
@@ -709,7 +728,22 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
                           <span className="font-bold text-sm">Full content</span>
                         </button>
                       </div>
-                      <p className="text-[10px] text-gray-400 dark:text-gray-500 italic">Use summarized context to reduce token usage and rate-limit pressure. Full mode sends entire previous modules for maximum continuity.</p>
+                      {localSettings.moduleContextMode === 'full' && (
+                        <div className="space-y-2">
+                          <label className="text-[11px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">Max previous modules in full context (Required)</label>
+                          <select
+                            value={localSettings.fullContextModuleLimit || 3}
+                            onChange={(e) => setLocalSettings((p: APISettings) => ({ ...p, fullContextModuleLimit: Number(e.target.value) }))}
+                            className="w-full bg-gray-50 dark:bg-white/[0.03] border border-amber-300/50 dark:border-amber-500/30 rounded-lg py-2 px-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500/20"
+                          >
+                            {[1, 2, 3, 4, 5, 6, 7, 8].map((count) => (
+                              <option key={count} value={count}>{count} module{count > 1 ? 's' : ''}</option>
+                            ))}
+                          </select>
+                          <p className="text-[10px] text-amber-600 dark:text-amber-400 italic">Keep this low to avoid 429 API errors (recommended: 2-4 modules).</p>
+                        </div>
+                      )}
+                      <p className="text-[10px] text-gray-400 dark:text-gray-500 italic">Compact mode uses the last 2 modules with short snippets. Full mode includes full previous module content and can hit rate limits if the module count is high.</p>
                     </div>
                   </section>
 
@@ -739,7 +773,7 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
                             ? (theme === 'light' ? 'bg-white text-orange-600 shadow-md ring-1 ring-black/5' : 'bg-orange-500/20 text-orange-300 shadow-md ring-1 ring-white/10')
                             : 'text-gray-500 hover:text-gray-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
                         >
-                          <span className="font-bold text-sm">Summarized (~300 words)</span>
+                          <span className="font-bold text-sm">Compact (last 2 modules)</span>
                         </button>
                         <button
                           onClick={() => setLocalSettings((p: APISettings) => ({ ...p, moduleContextMode: 'full' }))}
@@ -750,7 +784,22 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
                           <span className="font-bold text-sm">Full content</span>
                         </button>
                       </div>
-                      <p className="text-[10px] text-gray-400 dark:text-gray-500 italic">Use summarized context to reduce token usage and rate-limit pressure. Full mode sends entire previous modules for maximum continuity.</p>
+                      {localSettings.moduleContextMode === 'full' && (
+                        <div className="space-y-2">
+                          <label className="text-[11px] font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">Max previous modules in full context (Required)</label>
+                          <select
+                            value={localSettings.fullContextModuleLimit || 3}
+                            onChange={(e) => setLocalSettings((p: APISettings) => ({ ...p, fullContextModuleLimit: Number(e.target.value) }))}
+                            className="w-full bg-gray-50 dark:bg-white/[0.03] border border-amber-300/50 dark:border-amber-500/30 rounded-lg py-2 px-3 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500/20"
+                          >
+                            {[1, 2, 3, 4, 5, 6, 7, 8].map((count) => (
+                              <option key={count} value={count}>{count} module{count > 1 ? 's' : ''}</option>
+                            ))}
+                          </select>
+                          <p className="text-[10px] text-amber-600 dark:text-amber-400 italic">Keep this low to avoid 429 API errors (recommended: 2-4 modules).</p>
+                        </div>
+                      )}
+                      <p className="text-[10px] text-gray-400 dark:text-gray-500 italic">Compact mode uses the last 2 modules with short snippets. Full mode includes full previous module content and can hit rate limits if the module count is high.</p>
                     </div>
                   </section>
                 </div>

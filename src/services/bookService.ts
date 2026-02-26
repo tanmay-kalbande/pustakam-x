@@ -77,7 +77,8 @@ class BookGenerationService {
     defaultGenerationMode: 'stellar',
     defaultLanguage: 'en',
     moduleContextMode: 'summary',
-    moduleContextSummaryWords: 300
+    moduleContextSummaryWords: 300,
+    fullContextModuleLimit: 3
   };
 
   private onProgressUpdate?: (bookId: string, updates: Partial<BookProject>) => void;
@@ -1457,7 +1458,16 @@ Now take this input and roast it into a masterpiece.`;
   private buildContextSummary(previousModules: BookModule[], isFirstModule: boolean): string {
     if (isFirstModule || previousModules.length === 0) return '';
 
-    return `\n\nPREVIOUS MODULES CONTEXT:\n${previousModules
+    if (this.settings.moduleContextMode === 'full') {
+      const fullContextModuleLimit = Math.max(1, Math.min(8, this.settings.fullContextModuleLimit || 3));
+      const contextModules = previousModules.slice(-fullContextModuleLimit);
+
+      return `\n\nPREVIOUS MODULES CONTEXT (Full • last ${contextModules.length} module${contextModules.length > 1 ? 's' : ''}):\n${contextModules
+        .map((module, index) => [`\n### Module ${index + 1}: ${module.title}`, module.content].join('\n'))
+        .join('\n\n')}`;
+    }
+
+    return `\n\nPREVIOUS MODULES CONTEXT (Compact • last 2 modules):\n${previousModules
       .slice(-2)
       .map(module => `${module.title}: ${module.content.substring(0, 300)}...`)
       .join('\n\n')}`;
@@ -1481,7 +1491,8 @@ Now take this input and roast it into a masterpiece.`;
           moduleIndex,
           totalModules,
           this.settings.moduleContextMode,
-          this.settings.moduleContextSummaryWords
+          this.settings.moduleContextSummaryWords,
+          this.settings.fullContextModuleLimit
         );
       }
       return streetPromptService.buildModulePrompt(
@@ -1492,7 +1503,8 @@ Now take this input and roast it into a masterpiece.`;
         moduleIndex,
         totalModules,
         this.settings.moduleContextMode,
-        this.settings.moduleContextSummaryWords
+        this.settings.moduleContextSummaryWords,
+        this.settings.fullContextModuleLimit
       );
     }
 

@@ -48,6 +48,7 @@ export interface APISettings {
   defaultLanguage: 'en' | 'hi' | 'mr';
   moduleContextMode: 'full' | 'summary';
   moduleContextSummaryWords: number;
+  fullContextModuleLimit: number;
 }
 
 export * from './types/book';
