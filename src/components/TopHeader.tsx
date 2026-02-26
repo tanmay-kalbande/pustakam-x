@@ -156,35 +156,31 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
                     <div className="flex items-center gap-3">
                         {/* Grok-style Model Selector */}
                         {showModelSelector && (
-                            <>
+                            <div className="relative">
                                 {/* Desktop Model Selector */}
-                                <div className="relative hidden md:block">
-                                    <button
-                                        onClick={() => setShowModelMenu(!showModelMenu)}
-                                        className={`flex items-center gap-2 pl-4 pr-3 py-2 rounded-full transition-all text-sm font-medium
+                                <button
+                                    onClick={() => setShowModelMenu(!showModelMenu)}
+                                    className={`hidden md:flex items-center gap-2 pl-4 pr-3 py-2 rounded-full transition-all text-sm font-medium
                             ${theme === 'light'
-                                                ? 'bg-gray-100 hover:bg-gray-200 text-gray-900'
-                                                : 'bg-[#1a1a1a] hover:bg-[#252525] text-gray-200'}
+                                            ? 'bg-gray-100 hover:bg-gray-200 text-gray-900'
+                                            : 'bg-[#1a1a1a] hover:bg-[#252525] text-gray-200'}
                         `}
-                                    >
-                                        <span>{currentModelName}</span>
-                                        <ChevronDown size={14} className={`opacity-50 transition-transform ${showModelMenu ? 'rotate-180' : ''}`} />
-                                    </button>
-                                </div>
+                                >
+                                    <span>{currentModelName}</span>
+                                    <ChevronDown size={14} className={`opacity-50 transition-transform ${showModelMenu ? 'rotate-180' : ''}`} />
+                                </button>
 
                                 {/* Mobile Model Selector */}
-                                <div className="relative md:hidden">
-                                    <button
-                                        onClick={() => setShowModelMenu(!showModelMenu)}
-                                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all text-xs font-medium
+                                <button
+                                    onClick={() => setShowModelMenu(!showModelMenu)}
+                                    className={`flex md:hidden items-center gap-1.5 px-3 py-1.5 rounded-full transition-all text-xs font-medium
                                             ${theme === 'light'
-                                                ? 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-                                                : 'bg-[#1a1a1a] hover:bg-[#252525] text-gray-300'}`}
-                                    >
-                                        <span className="max-w-[100px] truncate">{currentModelName}</span>
-                                        <ChevronDown size={12} className={`opacity-50 transition-transform flex-shrink-0 ${showModelMenu ? 'rotate-180' : ''}`} />
-                                    </button>
-                                </div>
+                                            ? 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                                            : 'bg-[#1a1a1a] hover:bg-[#252525] text-gray-300'}`}
+                                >
+                                    <span className="max-w-[100px] truncate">{currentModelName}</span>
+                                    <ChevronDown size={12} className={`opacity-50 transition-transform flex-shrink-0 ${showModelMenu ? 'rotate-180' : ''}`} />
+                                </button>
 
                                 {/* Shared Model Dropdown (renders below whichever button is visible) */}
                                 {showModelMenu && (
@@ -260,7 +256,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
                                         </div>
                                     </>
                                 )}
-                            </>
+                            </div>
                         )}
 
 
