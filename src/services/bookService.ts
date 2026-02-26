@@ -1454,28 +1454,12 @@ Now take this input and roast it into a masterpiece.`;
   }
 
 
-  private summarizeModuleContent(content: string, wordLimit: number): string {
-    const words = content.split(/\s+/).filter(Boolean);
-    if (words.length <= wordLimit) return content;
-    return `${words.slice(0, wordLimit).join(' ')}\n\n[Summary truncated from ${words.length} words to ${wordLimit} words]`;
-  }
-
   private buildContextSummary(previousModules: BookModule[], isFirstModule: boolean): string {
     if (isFirstModule || previousModules.length === 0) return '';
 
-    const useSummaryMode = this.settings.moduleContextMode === 'summary';
-    const summaryWords = Math.max(120, Math.min(600, this.settings.moduleContextSummaryWords || 300));
-    const contextLabel = useSummaryMode
-      ? `Summarized History • ~${summaryWords} words/module`
-      : 'Full History So Far';
-
-    return `\n\nPREVIOUS MODULES CONTEXT (${contextLabel}):\n${previousModules
-      .map((module, index) => {
-        const moduleBody = useSummaryMode
-          ? this.summarizeModuleContent(module.content, summaryWords)
-          : module.content;
-        return [`\n### Module ${index + 1}: ${module.title}`, moduleBody].join('\n');
-      })
+    return `\n\nPREVIOUS MODULES CONTEXT:\n${previousModules
+      .slice(-2)
+      .map(module => `${module.title}: ${module.content.substring(0, 300)}...`)
       .join('\n\n')}`;
   }
 
