@@ -203,8 +203,6 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
 
   if (!isOpen) return null;
 
-  if (!isOpen) return null;
-
   const apiConfigs = [
     {
       id: 'cerebrasApiKey' as keyof APISettings,
@@ -689,28 +687,6 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
                       </label>
                     </div>
 
-                    <div className="space-y-4 pt-6 border-t border-gray-100 dark:border-white/[0.05]">
-                      <label className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">Previous Module Context Mode</label>
-                      <div className="grid grid-cols-2 gap-2 p-1 bg-gray-100 dark:bg-white/5 rounded-xl border border-gray-200 dark:border-white/10">
-                        <button
-                          onClick={() => setLocalSettings((p: APISettings) => ({ ...p, moduleContextMode: 'summary' }))}
-                          className={`focus-ring flex items-center justify-center gap-2.5 py-3 rounded-lg transition-all duration-200 ${localSettings.moduleContextMode === 'summary'
-                            ? (theme === 'light' ? 'bg-white text-orange-600 shadow-md ring-1 ring-black/5' : 'bg-orange-500/20 text-orange-300 shadow-md ring-1 ring-white/10')
-                            : 'text-gray-500 hover:text-gray-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
-                        >
-                          <span className="font-bold text-sm">Compact (last 2 modules)</span>
-                        </button>
-                        <button
-                          onClick={() => setLocalSettings((p: APISettings) => ({ ...p, moduleContextMode: 'full' }))}
-                          className={`focus-ring flex items-center justify-center gap-2.5 py-3 rounded-lg transition-all duration-200 ${localSettings.moduleContextMode === 'full'
-                            ? (theme === 'light' ? 'bg-white text-orange-600 shadow-md ring-1 ring-black/5' : 'bg-orange-500/20 text-orange-300 shadow-md ring-1 ring-white/10')
-                            : 'text-gray-500 hover:text-gray-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
-                        >
-                          <span className="font-bold text-sm">Full content</span>
-                        </button>
-                      </div>
-                      <p className="text-[10px] text-gray-400 dark:text-gray-500 italic">Compact mode uses the last 2 modules with short snippets. Full mode includes full previous module content and can hit rate limits if the module count is high.</p>
-                    </div>
                   </section>
 
 
@@ -730,28 +706,6 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
                       </button>
                     </div>
 
-                    <div className="space-y-4 pt-6 border-t border-gray-100 dark:border-white/[0.05]">
-                      <label className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">Previous Module Context Mode</label>
-                      <div className="grid grid-cols-2 gap-2 p-1 bg-gray-100 dark:bg-white/5 rounded-xl border border-gray-200 dark:border-white/10">
-                        <button
-                          onClick={() => setLocalSettings((p: APISettings) => ({ ...p, moduleContextMode: 'summary' }))}
-                          className={`focus-ring flex items-center justify-center gap-2.5 py-3 rounded-lg transition-all duration-200 ${localSettings.moduleContextMode === 'summary'
-                            ? (theme === 'light' ? 'bg-white text-orange-600 shadow-md ring-1 ring-black/5' : 'bg-orange-500/20 text-orange-300 shadow-md ring-1 ring-white/10')
-                            : 'text-gray-500 hover:text-gray-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
-                        >
-                          <span className="font-bold text-sm">Compact (last 2 modules)</span>
-                        </button>
-                        <button
-                          onClick={() => setLocalSettings((p: APISettings) => ({ ...p, moduleContextMode: 'full' }))}
-                          className={`focus-ring flex items-center justify-center gap-2.5 py-3 rounded-lg transition-all duration-200 ${localSettings.moduleContextMode === 'full'
-                            ? (theme === 'light' ? 'bg-white text-orange-600 shadow-md ring-1 ring-black/5' : 'bg-orange-500/20 text-orange-300 shadow-md ring-1 ring-white/10')
-                            : 'text-gray-500 hover:text-gray-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
-                        >
-                          <span className="font-bold text-sm">Full content</span>
-                        </button>
-                      </div>
-                      <p className="text-[10px] text-gray-400 dark:text-gray-500 italic">Compact mode uses the last 2 modules with short snippets. Full mode includes full previous module content and can hit rate limits if the module count is high.</p>
-                    </div>
                   </section>
                 </div>
               )}

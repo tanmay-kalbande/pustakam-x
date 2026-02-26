@@ -1,5 +1,5 @@
 // src/components/AuthModal.tsx
-// Authentication modal with dark minimal design matching landing page
+// Authentication modal with theme-aware design matching the app
 
 import React, { useState, useEffect } from 'react';
 import { X, Mail, Lock, User, Loader2, ArrowRight, Eye, EyeOff, MessageCircle, Send, Briefcase, BookOpen } from 'lucide-react';
@@ -102,10 +102,10 @@ export function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'signin' }
         return (
             <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
                 <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
-                <div className="relative w-full max-w-sm bg-black border border-[var(--color-border)] rounded-2xl overflow-hidden">
+                <div className="relative w-full max-w-sm bg-white dark:bg-[#111111] border border-gray-200 dark:border-[var(--color-border)] rounded-2xl overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/5 to-transparent pointer-events-none" />
 
-                    <button onClick={onClose} className="absolute top-4 right-4 p-2 rounded-lg text-gray-500 hover:text-white hover:bg-white/10 transition-colors z-10">
+                    <button onClick={onClose} className="absolute top-4 right-4 p-2 rounded-lg text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 transition-colors z-10">
                         <X size={18} />
                     </button>
 
@@ -113,7 +113,7 @@ export function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'signin' }
                         <div className="w-16 h-16 mx-auto mb-5 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-2xl flex items-center justify-center border border-white/10">
                             <img src="/white-logo.png" alt="Pustakam" className="w-10 h-10" />
                         </div>
-                        <h2 className="text-xl font-bold text-white mb-2">Subscribe to Premium</h2>
+                        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Subscribe to Premium</h2>
                         <p className="text-sm text-gray-500 mb-8">Choose how you'd like to contact us</p>
 
                         <div className="space-y-3">
@@ -126,14 +126,14 @@ export function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'signin' }
                             </button>
                             <button
                                 onClick={handleEmail}
-                                className="w-full py-3.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium rounded-xl flex items-center justify-center gap-3 transition-colors"
+                                className="w-full py-3.5 bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white font-medium rounded-xl flex items-center justify-center gap-3 transition-colors"
                             >
                                 <Send size={20} />
                                 <span>Email Us</span>
                             </button>
                         </div>
 
-                        <p className="text-xs text-gray-600 mt-6">We'll respond within 24 hours</p>
+                        <p className="text-xs text-gray-400 dark:text-gray-600 mt-6">We'll respond within 24 hours</p>
                     </div>
                 </div>
             </div>
@@ -146,12 +146,12 @@ export function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'signin' }
             <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
 
             {/* Modal - wider for signup */}
-            <div className={`relative w-full ${mode === 'signup' ? 'max-w-md' : 'max-w-sm'} bg-black border border-[var(--color-border)] rounded-2xl overflow-hidden`}>
+            <div className={`relative w-full ${mode === 'signup' ? 'max-w-md' : 'max-w-sm'} bg-white dark:bg-[#111111] border border-gray-200 dark:border-[var(--color-border)] rounded-2xl overflow-hidden`}>
                 {/* Gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/5 to-transparent pointer-events-none" />
 
                 {/* Close button */}
-                <button onClick={onClose} className="absolute top-4 right-4 p-2 rounded-lg text-gray-500 hover:text-white hover:bg-white/10 transition-colors z-10">
+                <button onClick={onClose} className="absolute top-4 right-4 p-2 rounded-lg text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/10 transition-colors z-10">
                     <X size={16} />
                 </button>
 
@@ -160,7 +160,7 @@ export function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'signin' }
                     <div className="w-12 h-12 mx-auto mb-3 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-xl flex items-center justify-center border border-white/10">
                         <img src="/white-logo.png" alt="Pustakam" className="w-7 h-7" />
                     </div>
-                    <h2 className="text-lg font-bold text-white">
+                    <h2 className="text-lg font-bold text-gray-900 dark:text-white">
                         {mode === 'subscribe' ? 'Sign In to Subscribe' : mode === 'signin' ? 'Welcome Back' : 'Create Account'}
                     </h2>
                     <p className="text-xs text-gray-500 mt-1">
@@ -199,7 +199,7 @@ export function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'signin' }
                                         onChange={(e) => setFullName(e.target.value)}
                                         placeholder="Your name"
                                         required
-                                        className="w-full pl-10 pr-3 py-2.5 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-600 text-sm focus:outline-none focus:border-cyan-500/50 transition-colors"
+                                        className="w-full pl-10 pr-3 py-2.5 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 text-sm focus:outline-none focus:border-cyan-500/50 transition-colors"
                                     />
                                 </div>
                             </div>
@@ -213,16 +213,16 @@ export function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'signin' }
                                             value={profession}
                                             onChange={(e) => setProfession(e.target.value)}
                                             required
-                                            className="w-full pl-10 pr-3 py-2.5 bg-white/5 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:border-cyan-500/50 transition-colors appearance-none cursor-pointer"
+                                            className="w-full pl-10 pr-3 py-2.5 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg text-gray-900 dark:text-white text-sm focus:outline-none focus:border-cyan-500/50 transition-colors appearance-none cursor-pointer"
                                         >
-                                            <option value="" disabled className="bg-black text-gray-500">Select profession</option>
-                                            <option value="student" className="bg-black">Student</option>
-                                            <option value="developer" className="bg-black">Developer</option>
-                                            <option value="designer" className="bg-black">Designer</option>
-                                            <option value="researcher" className="bg-black">Researcher</option>
-                                            <option value="business" className="bg-black">Business</option>
-                                            <option value="educator" className="bg-black">Educator</option>
-                                            <option value="other" className="bg-black">Other</option>
+                                            <option value="" disabled className="bg-white dark:bg-black text-gray-500">Select profession</option>
+                                            <option value="student" className="bg-white dark:bg-black">Student</option>
+                                            <option value="developer" className="bg-white dark:bg-black">Developer</option>
+                                            <option value="designer" className="bg-white dark:bg-black">Designer</option>
+                                            <option value="researcher" className="bg-white dark:bg-black">Researcher</option>
+                                            <option value="business" className="bg-white dark:bg-black">Business</option>
+                                            <option value="educator" className="bg-white dark:bg-black">Educator</option>
+                                            <option value="other" className="bg-white dark:bg-black">Other</option>
                                         </select>
                                     </div>
                                 </div>
@@ -236,7 +236,7 @@ export function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'signin' }
                                             value={learningInterest}
                                             onChange={(e) => setLearningInterest(e.target.value)}
                                             placeholder="e.g. AI, Web Dev"
-                                            className="w-full pl-10 pr-3 py-2.5 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-600 text-sm focus:outline-none focus:border-cyan-500/50 transition-colors"
+                                            className="w-full pl-10 pr-3 py-2.5 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 text-sm focus:outline-none focus:border-cyan-500/50 transition-colors"
                                         />
                                     </div>
                                 </div>
@@ -254,7 +254,7 @@ export function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'signin' }
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="you@example.com"
                                 required
-                                className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 text-sm focus:outline-none focus:border-cyan-500/50 transition-colors"
+                                className="w-full pl-11 pr-4 py-3 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 text-sm focus:outline-none focus:border-cyan-500/50 transition-colors"
                             />
                         </div>
                     </div>
@@ -270,12 +270,12 @@ export function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'signin' }
                                 placeholder="••••••••"
                                 required
                                 minLength={6}
-                                className="w-full pl-11 pr-11 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-600 text-sm focus:outline-none focus:border-cyan-500/50 transition-colors"
+                                className="w-full pl-11 pr-11 py-3 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 text-sm focus:outline-none focus:border-cyan-500/50 transition-colors"
                             />
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-white transition-colors"
+                                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
                             >
                                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                             </button>
@@ -285,7 +285,7 @@ export function AuthModal({ isOpen, onClose, onSuccess, initialMode = 'signin' }
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-xl text-white/80 text-sm font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group mt-2"
+                        className="w-full px-4 py-3 bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 border border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 rounded-xl text-gray-700 dark:text-white/80 text-sm font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group mt-2"
                     >
                         {isLoading ? (
                             <><Loader2 size={18} className="animate-spin" /><span>Please wait...</span></>
