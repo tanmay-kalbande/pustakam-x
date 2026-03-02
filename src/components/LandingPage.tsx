@@ -22,7 +22,6 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import NebulaBackground from './NebulaBackground';
-import TopoHeroBackground from './TopoHeroBackground';
 import { useMotionPolicy } from '../hooks/useMotionPolicy';
 
 // Types and Interfaces
@@ -158,11 +157,13 @@ const LandingPage = ({
     return to >= from ? 1 : -1;
   };
 
-  const landingDesktopVariants = {
-    enter: { opacity: 1, x: 0, scale: 1 },
-    center: { opacity: 1, x: 0, scale: 1, transition: { duration: shouldReduceMotion ? 0 : 0.18 } },
-    exit: { opacity: 1, x: 0, scale: 1, transition: { duration: 0 } },
-  };
+  const landingDesktopVariants = shouldReduceMotion
+    ? {
+      enter: { opacity: 1, x: 0, scale: 1 },
+      center: { opacity: 1, x: 0, scale: 1, transition: { duration: 0 } },
+      exit: { opacity: 1, x: 0, scale: 1, transition: { duration: 0 } },
+    }
+    : desktopVariants;
 
   // --- SUB-RENDERERS ---
 
@@ -434,11 +435,7 @@ const LandingPage = ({
       case 'home':
       default:
         return (
-          <div key="home" className="relative flex flex-col items-center justify-center min-h-full text-center px-4 py-6">
-            {/* 3D Parallax Topographical Background — desktop only */}
-            <div className="hidden md:block absolute inset-0 z-0 overflow-hidden pointer-events-none">
-              <TopoHeroBackground />
-            </div>
+          <div key="home" className="flex flex-col items-center justify-center min-h-full text-center px-4 py-6">
             <div className="relative z-10 max-w-4xl mb-6">
               <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-[200%] pb-2 md:hidden">
                 <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/20" style={{ fontFamily: "'Rubik', sans-serif" }}>
@@ -803,13 +800,13 @@ const LandingPage = ({
                   WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 40px, black calc(100% - 40px), transparent)'
                 }}
               >
-                <AnimatePresence mode="wait">
+                <AnimatePresence mode="wait" custom={getDirection()}>
                   <motion.div
                     key={`mobile-${activeTab}`}
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -12 }}
-                    transition={{ duration: 0.2 }}
+                    custom={getDirection()}
+                    initial={{ opacity: 0, x: shouldReduceMotion ? 0 : getDirection() * 30 }}
+                    animate={{ opacity: 1, x: 0, transition: { duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] } }}
+                    exit={{ opacity: 0, x: shouldReduceMotion ? 0 : getDirection() * -20, transition: { duration: 0.2, ease: [0.55, 0, 1, 0.45] } }}
                     className="py-4"
                   >
                     {renderMobileContent()}
