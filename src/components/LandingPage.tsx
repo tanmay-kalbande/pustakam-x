@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import NebulaBackground from './NebulaBackground';
+import TopoHeroBackground from './TopoHeroBackground';
 import { useMotionPolicy } from '../hooks/useMotionPolicy';
 
 // Types and Interfaces
@@ -433,7 +434,11 @@ const LandingPage = ({
       case 'home':
       default:
         return (
-          <div key="home" className="flex flex-col items-center justify-center min-h-full text-center px-4 py-6">
+          <div key="home" className="relative flex flex-col items-center justify-center min-h-full text-center px-4 py-6">
+            {/* 3D Parallax Topographical Background — desktop only */}
+            <div className="hidden md:block absolute inset-0 z-0 overflow-hidden pointer-events-none">
+              <TopoHeroBackground />
+            </div>
             <div className="relative z-10 max-w-4xl mb-6">
               <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-[200%] pb-2 md:hidden">
                 <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/20" style={{ fontFamily: "'Rubik', sans-serif" }}>
@@ -820,7 +825,7 @@ const LandingPage = ({
               <motion.div
                 key={activeTab}
                 custom={getDirection()}
-                              variants={landingDesktopVariants}
+                variants={landingDesktopVariants}
                 initial="enter"
                 animate="center"
                 exit="exit"
