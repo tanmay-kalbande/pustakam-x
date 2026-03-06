@@ -60,6 +60,10 @@ const MODEL_OPTIONS: { provider: ModelProvider; model: string; name: string }[] 
     // Cohere Models
     { provider: 'cohere', model: 'command-a-03-2025', name: 'Cohere Command A' },
     { provider: 'cohere', model: 'command-r-plus-08-2024', name: 'Cohere Command R+' },
+    // MiniMax Models
+    { provider: 'minimax', model: 'MiniMax-M2.5', name: 'MiniMax M2.5' },
+    { provider: 'minimax', model: 'MiniMax-M2.5-highspeed', name: 'MiniMax M2.5 Highspeed' },
+    { provider: 'minimax', model: 'MiniMax-M2.1', name: 'MiniMax M2.1' },
 ];
 
 export const TopHeader: React.FC<TopHeaderProps> = ({
@@ -93,6 +97,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
             case 'xai': return !!settings.xaiApiKey;
             case 'openrouter': return !!settings.openRouterApiKey;
             case 'cohere': return !!settings.cohereApiKey;
+            case 'minimax': return !!settings.minimaxApiKey;
             default: return false;
         }
     };
@@ -111,7 +116,8 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
                 'qwen-3-235b-a22b-instruct-2507', 'zai-glm-4.7', 'llama-3.3-70b', 'llama3.1-8b', // Cerebras (Multilingual Kings / Raw)
                 'gemma-3-27b-it', // Google Gemma (Multilingual Beast)
                 'arcee-ai/trinity-large-preview:free', 'arcee-ai/trinity-mini:free', 'tngtech/deepseek-r1t2-chimera:free', 'cognitivecomputations/dolphin-mistral-24b-venice-edition:free', // OpenRouter Models
-                'command-a-03-2025', 'command-r-plus-08-2024' // Cohere Models
+                'command-a-03-2025', 'command-r-plus-08-2024', // Cohere Models
+                'MiniMax-M2.5', 'MiniMax-M2.5-highspeed', 'MiniMax-M2.1' // MiniMax Models
             ];
             return allowedModels.includes(m.model);
         }

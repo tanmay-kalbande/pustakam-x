@@ -1,5 +1,5 @@
 // src/types.ts
-export type ModelProvider = 'cerebras' | 'google' | 'mistral' | 'xai' | 'groq' | 'openrouter' | 'cohere';
+export type ModelProvider = 'cerebras' | 'google' | 'mistral' | 'xai' | 'groq' | 'openrouter' | 'cohere' | 'minimax';
 
 export type ModelID =
   // Google Gemini Models
@@ -32,7 +32,11 @@ export type ModelID =
   | 'cognitivecomputations/dolphin-mistral-24b-venice-edition:free'
   // Cohere Models
   | 'command-a-03-2025'
-  | 'command-r-plus-08-2024';
+  | 'command-r-plus-08-2024'
+  // MiniMax Models
+  | 'MiniMax-M2.5'
+  | 'MiniMax-M2.5-highspeed'
+  | 'MiniMax-M2.1';
 
 export interface APISettings {
   googleApiKey: string;
@@ -42,6 +46,7 @@ export interface APISettings {
   xaiApiKey: string;
   openRouterApiKey: string;
   cohereApiKey: string;
+  minimaxApiKey: string;
   selectedModel: ModelID;
   selectedProvider: ModelProvider;
   defaultGenerationMode: 'stellar' | 'blackhole';

@@ -245,6 +245,12 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
       name: 'Cohere',
       url: 'https://dashboard.cohere.com/api-keys',
       description: 'For Command A and Command R+ models'
+    },
+    {
+      id: 'minimaxApiKey' as keyof APISettings,
+      name: 'MiniMax',
+      url: 'https://platform.minimax.io/user-center/basic-information/interface-key',
+      description: 'For MiniMax M2.5 and M2.1 models'
     }
   ];
 

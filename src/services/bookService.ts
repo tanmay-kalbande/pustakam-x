@@ -451,6 +451,7 @@ Now take this input and roast it into a masterpiece.`;
       case 'xai': return this.settings.xaiApiKey || null;
       case 'openrouter': return this.settings.openRouterApiKey || null;
       case 'cohere': return this.settings.cohereApiKey || null;
+      case 'minimax': return this.settings.minimaxApiKey || null;
       default: return null;
     }
   }
@@ -658,6 +659,9 @@ Now take this input and roast it into a masterpiece.`;
           break;
         case 'cohere':
           result = await this.generateWithCohere(prompt, abortController.signal, onChunk);
+          break;
+        case 'minimax':
+          result = await this.generateWithMinimax(prompt, abortController.signal, onChunk);
           break;
         default:
           throw new Error(`Unsupported provider: ${this.settings.selectedProvider}`);
@@ -994,6 +998,90 @@ Now take this input and roast it into a masterpiece.`;
       }
     }
     throw new Error('Cerebras API failed after retries');
+  }
+
+  // ✅ NEW: MiniMax API Integration
+  private async generateWithMinimax(prompt: string, signal?: AbortSignal, onChunk?: (chunk: string) => void): Promise<string> {
+    const apiKey = this.getApiKey();
+    const model = this.settings.selectedModel;
+    const maxRetries = this.MAX_MODULE_RETRIES;
+    let attempt = 0;
+
+    while (attempt < maxRetries) {
+      try {
+        const response = await fetch('https://api.minimax.chat/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`
+          },
+          body: JSON.stringify({
+            model: model,
+            messages: [{ role: 'user', content: prompt }],
+            temperature: 0.7,
+            max_tokens: 8192,
+            stream: true
+          }),
+          signal
+        });
+
+        if (response.status === 429 || response.status === 503) {
+          const delay = this.calculateRetryDelay(attempt + 1, true);
+          console.warn(`[MINIMAX] Rate limit hit. Waiting ${Math.round(delay / 1000)}s before retry ${attempt + 1}/${maxRetries}`);
+          await sleep(delay);
+          attempt++;
+          continue;
+        }
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData?.error?.message || `MiniMax API Error: ${response.status}`);
+        }
+
+        if (!response.body) throw new Error('Response body is null');
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let fullContent = '';
+        let buffer = '';
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split('\n');
+          buffer = lines.pop() || '';
+
+          for (const line of lines) {
+            const trimmedLine = line.trim();
+            if (trimmedLine.startsWith('data: ')) {
+              const jsonStr = trimmedLine.substring(6);
+              if (jsonStr === '[DONE]') continue;
+
+              try {
+                const data = JSON.parse(jsonStr);
+                const textPart = data?.choices?.[0]?.delta?.content || '';
+                if (textPart) {
+                  fullContent += textPart;
+                  if (onChunk) onChunk(textPart);
+                }
+              } catch (parseError) { }
+            }
+          }
+        }
+
+        if (!fullContent) throw new Error('No content generated');
+        return fullContent;
+
+      } catch (error) {
+        if (error instanceof Error && error.name === 'AbortError') throw error;
+        attempt++;
+        if (attempt >= maxRetries) throw error;
+        await sleep(this.calculateRetryDelay(attempt, false));
+      }
+    }
+    throw new Error('MiniMax API failed after retries');
   }
 
 

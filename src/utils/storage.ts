@@ -20,6 +20,7 @@ const defaultSettings: APISettings = {
   xaiApiKey: '',
   openRouterApiKey: '',
   cohereApiKey: '',
+  minimaxApiKey: '',
   selectedProvider: 'cerebras',
   selectedModel: 'gpt-oss-120b',
   defaultGenerationMode: 'stellar',
@@ -29,7 +30,7 @@ const defaultSettings: APISettings = {
 };
 
 // Valid providers list
-const validProviders: ModelProvider[] = ['cerebras', 'google', 'mistral', 'xai', 'groq', 'openrouter', 'cohere'];
+const validProviders: ModelProvider[] = ['cerebras', 'google', 'mistral', 'xai', 'groq', 'openrouter', 'cohere', 'minimax'];
 
 // Valid models per provider
 const validModels: Record<ModelProvider, ModelID[]> = {
@@ -40,6 +41,7 @@ const validModels: Record<ModelProvider, ModelID[]> = {
   groq: ['llama-3.3-70b-versatile', 'moonshotai/kimi-k2-instruct-0905', 'groq/compound', 'openai/gpt-oss-20b'],
   openrouter: ['arcee-ai/trinity-large-preview:free', 'arcee-ai/trinity-mini:free', 'tngtech/deepseek-r1t2-chimera:free', 'cognitivecomputations/dolphin-mistral-24b-venice-edition:free'],
   cohere: ['command-a-03-2025', 'command-r-plus-08-2024'],
+  minimax: ['MiniMax-M2.5', 'MiniMax-M2.5-highspeed', 'MiniMax-M2.1'],
 };
 
 export const storageUtils = {
