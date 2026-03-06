@@ -1730,12 +1730,14 @@ const DetailTabButton = ({
 }) => (
   <button
     onClick={onClick}
-    className={`flex items-center gap-2 px-1 py-3 text-sm font-semibold transition-all duration-200 border-b-2 ${isActive
-      ? 'border-[var(--color-text-primary)] text-[var(--color-text-primary)]'
-      : 'border-transparent text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
+    className={`group inline-flex items-center gap-2.5 px-3 py-2 rounded-xl border text-sm font-semibold transition-all duration-200 ${isActive
+      ? 'bg-[var(--color-bg)] border-[var(--color-border)] text-[var(--color-text-primary)] shadow-[0_8px_22px_-16px_rgba(0,0,0,0.75)]'
+      : 'border-transparent text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-border)] hover:bg-[var(--color-bg)]/60'
       }`}
   >
-    <Icon className="w-4 h-4" />
+    <span className={`inline-flex items-center justify-center w-6 h-6 rounded-lg transition-colors ${isActive ? 'bg-orange-500/10 text-orange-500' : 'bg-[var(--color-card)] text-[var(--color-text-secondary)] group-hover:text-[var(--color-text-primary)]'}`}>
+      <Icon className="w-3.5 h-3.5" />
+    </span>
     {label}
   </button>
 );
@@ -1908,10 +1910,12 @@ export function BookView({
   };
 
   const handleCreateRoadmap = async (session: BookSession) => {
+    if (localIsGenerating) return;
+
     if (!session.goal.trim()) {
-      // showToast('Please enter a learning goal.', 'warning');
       return;
     }
+
     if (!hasApiKey) {
       showAlertDialog({
         type: 'warning',
@@ -1922,24 +1926,38 @@ export function BookView({
       });
       return;
     }
-    await onCreateBookRoadmap(session);
 
-    // Clear form after successful book creation
-    setFormData({
-      goal: '',
-      language: 'en',
-      targetAudience: '',
-      complexityLevel: 'intermediate',
-      reasoning: '',
-      generationMode: 'stellar',
-      preferences: {
-        includeExamples: true,
-        includePracticalExercises: false,
-        includeQuizzes: false,
-      },
-      preferredModuleCount: 6,
-    });
-    setShowAdvanced(false);
+    setLocalIsGenerating(true);
+
+    try {
+      await onCreateBookRoadmap(session);
+
+      setFormData({
+        goal: '',
+        language: settings?.defaultLanguage || 'en',
+        targetAudience: '',
+        complexityLevel: 'intermediate',
+        reasoning: '',
+        generationMode: settings?.defaultGenerationMode || 'stellar',
+        preferences: {
+          includeExamples: true,
+          includePracticalExercises: false,
+          includeQuizzes: false,
+        },
+        preferredModuleCount: 6,
+      });
+      setShowAdvanced(false);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to create roadmap.';
+      showAlertDialog({
+        type: 'error',
+        title: 'Roadmap Creation Failed',
+        message: errorMessage,
+        confirmText: 'Dismiss'
+      });
+    } finally {
+      setLocalIsGenerating(false);
+    }
   };
 
   const handleGenerateAllModules = async (book: BookProject, session: BookSession) => {
@@ -2444,6 +2462,8 @@ export function BookView({
     const failedModules = currentBook.modules.filter((m) => m.status === 'error');
     const completedModules = currentBook.modules.filter((m) => m.status === 'completed');
     const isPaused = generationStatus?.status === 'paused';
+    const totalModules = currentBook.roadmap?.modules.length || currentBook.modules.length || 0;
+    const totalWordCount = currentBook.modules.reduce((acc, module) => acc + (module.wordCount || 0), 0) || currentBook.totalWords || 0;
 
     return (
       <div className="min-h-full" style={{ background: 'var(--color-bg)', fontFamily: 'Rubik, sans-serif' }}>
@@ -2455,23 +2475,41 @@ export function BookView({
                 onSelectBook(null);
                 setShowListInMain(true);
               }}
-              className="inline-flex items-center gap-2 text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors mb-5"
+              className="inline-flex items-center gap-2 text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors mb-5 px-3 py-2 rounded-xl border border-[var(--color-border)] hover:border-orange-500/30 bg-[var(--color-card)]/70"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to My Books
             </button>
             <h1 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] mb-1.5 tracking-tight">{currentBook.title}</h1>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 mb-3">
               <div className="flex items-center gap-1.5 text-sm font-medium text-[var(--color-text-secondary)]">
                 {getStatusIcon(currentBook.status)}
                 {getStatusText(currentBook.status)}
               </div>
             </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-[var(--color-border)] bg-[var(--color-card)] text-[11px] font-medium text-[var(--color-text-secondary)]">
+                <FileText className="w-3.5 h-3.5" />
+                {completedModules.length}/{totalModules} modules
+              </span>
+              {totalWordCount > 0 && (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-[var(--color-border)] bg-[var(--color-card)] text-[11px] font-medium text-[var(--color-text-secondary)]">
+                  <BookText className="w-3.5 h-3.5" />
+                  {totalWordCount.toLocaleString()} words
+                </span>
+              )}
+              {currentBook.status === 'completed' && (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-[11px] font-semibold text-emerald-500">
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  Ready to read
+                </span>
+              )}
+            </div>
           </div>
 
           {currentBook.status === 'completed' && (
-            <div className="border-b border-[var(--color-border)] mb-7">
-              <div className="flex items-center gap-6">
+            <div className="mb-7">
+              <div className="inline-flex max-w-full items-center gap-1 p-1.5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] overflow-x-auto">
                 <DetailTabButton
                   label="Overview"
                   Icon={ListChecks}

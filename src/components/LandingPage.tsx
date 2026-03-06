@@ -91,6 +91,32 @@ const colorStyles: Record<string, { chip: string; border: string; icon: string }
     icon: 'text-emerald-400/90',
   },
 };
+const processCardStyles: Record<string, { step: string; chip: string; border: string; icon: string }> = {
+  cyan: {
+    step: 'text-cyan-400/40',
+    chip: 'bg-cyan-500/[0.08]',
+    border: 'border-cyan-500/20',
+    icon: 'text-cyan-400/90',
+  },
+  purple: {
+    step: 'text-purple-400/40',
+    chip: 'bg-purple-500/[0.08]',
+    border: 'border-purple-500/20',
+    icon: 'text-purple-400/90',
+  },
+  amber: {
+    step: 'text-amber-400/40',
+    chip: 'bg-amber-500/[0.08]',
+    border: 'border-amber-500/20',
+    icon: 'text-amber-400/90',
+  },
+  emerald: {
+    step: 'text-emerald-400/40',
+    chip: 'bg-emerald-500/[0.08]',
+    border: 'border-emerald-500/20',
+    icon: 'text-emerald-400/90',
+  },
+};
 
 const desktopVariants = {
   enter: (dir: number) => ({
@@ -294,19 +320,22 @@ const LandingPage = ({
                 { step: '02', title: 'Mapping', desc: 'Architect the tone', icon: Binary, color: 'purple' },
                 { step: '03', title: 'Synthesis', desc: 'Building your base', icon: Cpu, color: 'amber' },
                 { step: '04', title: 'Export', desc: 'Extract your PDF', icon: HardDriveDownload, color: 'emerald' },
-              ].map((item, idx) => (
-                <div
-                  key={idx}
-                  className="bg-[#050505]/60 border border-white/10 rounded-2xl md:rounded-[24px] px-3 py-4 md:px-5 md:py-7 flex flex-col items-center justify-center text-center hover:border-white/20 transition-all duration-500 group relative overflow-hidden hover:bg-white/[0.03] backdrop-blur-sm"
-                >
-                  <div className={`absolute top-2 right-2 text-[8px] font-mono text-${item.color}-400/40 font-bold`}>{item.step}</div>
-                  <div className={`w-8 h-8 md:w-12 md:h-12 rounded-xl bg-${item.color}-500/[0.08] border border-${item.color}-500/20 flex items-center justify-center mb-2 md:mb-4 group-hover:scale-110 transition-transform duration-500`}>
-                    <item.icon className={`w-4 h-4 md:w-6 md:h-6 text-${item.color}-400/90`} strokeWidth={1.5} />
+              ].map((item, idx) => {
+                const style = processCardStyles[item.color];
+                return (
+                  <div
+                    key={idx}
+                    className="bg-[#050505]/60 border border-white/10 rounded-2xl md:rounded-[24px] px-3 py-4 md:px-5 md:py-7 flex flex-col items-center justify-center text-center hover:border-white/20 transition-all duration-500 group relative overflow-hidden hover:bg-white/[0.03] backdrop-blur-sm"
+                  >
+                    <div className={`absolute top-2 right-2 text-[8px] font-mono font-bold ${style.step}`}>{item.step}</div>
+                    <div className={`w-8 h-8 md:w-12 md:h-12 rounded-xl border flex items-center justify-center mb-2 md:mb-4 group-hover:scale-110 transition-transform duration-500 ${style.chip} ${style.border}`}>
+                      <item.icon className={`w-4 h-4 md:w-6 md:h-6 ${style.icon}`} strokeWidth={1.5} />
+                    </div>
+                    <h3 className="text-white font-medium text-[9px] md:text-xs mb-1 md:mb-2.5 tracking-widest uppercase opacity-90">{item.title}</h3>
+                    <p className="text-white/40 text-[8px] md:text-[10px] leading-tight px-1 md:px-2">{item.desc}</p>
                   </div>
-                  <h3 className="text-white font-medium text-[9px] md:text-xs mb-1 md:mb-2.5 tracking-widest uppercase opacity-90">{item.title}</h3>
-                  <p className="text-white/40 text-[8px] md:text-[10px] leading-tight px-1 md:px-2">{item.desc}</p>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <div className="mt-10 flex items-center justify-center gap-4 opacity-40">
@@ -878,3 +907,4 @@ const LandingPage = ({
 };
 
 export default LandingPage;
+

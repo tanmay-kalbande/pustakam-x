@@ -258,18 +258,18 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
     <>
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm" onClick={onClose}>
         <div
-          className="relative w-full max-w-4xl bg-white dark:bg-[#1a1a1a] border border-[var(--color-border)] rounded-2xl shadow-2xl flex flex-col h-[90vh] md:h-[600px] overflow-hidden"
+          className="relative w-full max-w-5xl bg-[var(--color-card)] border border-[var(--color-border)] rounded-3xl shadow-[0_32px_80px_-35px_rgba(0,0,0,0.8)] flex flex-col h-[90vh] md:h-[680px] overflow-hidden"
           onClick={e => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="px-4 md:px-6 py-4 flex items-center justify-between border-b border-gray-100 dark:border-white/[0.08] shrink-0">
+          <div className="px-5 md:px-7 py-4.5 flex items-center justify-between border-b border-[var(--color-border)] shrink-0 bg-[var(--color-card)]/95">
             <div className="flex items-center gap-3">
               <Settings size={18} className="text-gray-400" />
-              <h2 className="text-xs md:text-sm font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">System Preferences</h2>
+              <h2 className="text-sm md:text-base font-semibold tracking-tight text-[var(--color-text-primary)]">Settings</h2>
             </div>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/[0.08] transition-colors text-gray-400 hover:text-gray-900 dark:hover:text-white"
+              className="p-1.5 rounded-lg hover:bg-[var(--color-bg)] transition-colors text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
             >
               <X size={18} />
             </button>
@@ -277,11 +277,11 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
 
           <div className="flex flex-1 overflow-hidden flex-col md:flex-row">
             {/* Sidebar with Nebula visual cues */}
-            <div className={`w-full md:w-[280px] border-b md:border-b-0 md:border-r flex flex-col backdrop-blur-md transition-colors overflow-hidden ${theme === 'light' ? 'bg-white/80 border-gray-100' : 'bg-black/60 border-white/[0.05]'}`}>
-              <div className="p-4 md:p-8 flex md:flex-col overflow-x-auto md:overflow-y-auto md:overflow-x-hidden items-center md:items-start whitespace-nowrap md:whitespace-normal custom-scrollbar flex-1">
+            <div className={`w-full md:w-[290px] border-b md:border-b-0 md:border-r flex flex-col backdrop-blur-md transition-colors overflow-hidden ${theme === 'light' ? 'bg-[var(--color-bg)] border-[var(--color-border)]' : 'bg-[var(--color-bg)] border-[var(--color-border)]'}`}>
+              <div className="p-4 md:p-6 flex md:flex-col overflow-x-auto md:overflow-y-auto md:overflow-x-hidden items-center md:items-start whitespace-nowrap md:whitespace-normal custom-scrollbar flex-1">
                 <div className="flex items-center gap-2 mb-0 md:mb-8 mr-6 md:mr-0 shrink-0">
-                  <div className="w-1.5 md:w-2 h-6 md:h-8 bg-gradient-to-b from-orange-500 to-purple-600 rounded-full" />
-                  <h2 className="text-base md:text-xl font-black tracking-tight text-gray-900 dark:text-white uppercase">System</h2>
+                  <div className="w-1.5 md:w-2 h-6 md:h-8 bg-gradient-to-b from-orange-500 to-amber-500 rounded-full" />
+                  <h2 className="text-base md:text-xl font-black tracking-tight text-[var(--color-text-primary)] uppercase">System</h2>
                 </div>
                 <nav className="flex md:flex-col space-x-1 md:space-x-0 md:space-y-1 shrink-0">
                   {[
@@ -294,8 +294,8 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id as any)}
                       className={`flex items-center gap-3 px-4 py-2.5 md:py-3 rounded-xl text-xs md:text-sm font-bold transition-all duration-300 text-left whitespace-nowrap ${activeTab === tab.id
-                        ? 'bg-gradient-to-r from-orange-500/10 to-purple-500/10 text-orange-500 shadow-sm'
-                        : 'text-gray-500 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/[0.03]'
+                        ? 'bg-orange-500/12 text-orange-500 shadow-sm border border-orange-500/20'
+                        : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg)]'
                         }`}
                     >
                       <tab.icon size={activeTab === tab.id ? 18 : 16} className={`shrink-0 ${activeTab === tab.id ? 'text-orange-500' : 'opacity-50'}`} />
@@ -333,10 +333,10 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
                 </div>
               </div>
 
-              <div className="hidden md:flex mt-auto p-8 border-t border-gray-100 dark:border-white/[0.05]">
+              <div className="hidden md:flex mt-auto p-6 border-t border-[var(--color-border)]">
                 <button
                   onClick={onToggleTheme}
-                  className="w-full flex items-center justify-between p-4 rounded-2xl bg-gray-50 dark:bg-white/[0.03] border border-gray-100 dark:border-white/[0.05] group hover:border-orange-500/30 transition-all"
+                  className="w-full flex items-center justify-between p-4 rounded-2xl bg-[var(--color-card)] border border-[var(--color-border)] group hover:border-orange-500/30 transition-all"
                 >
                   <div className="flex items-center gap-3">
                     {theme === 'light' ? <Sun size={18} className="text-amber-500" /> : <Moon size={18} className="text-purple-400" />}
@@ -350,7 +350,7 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
             </div>
 
             {/* Content Area - Responsive width */}
-            <div className="flex-1 overflow-y-auto bg-[var(--color-card)] p-5 md:p-8 scroll-smooth text-[var(--color-text-primary)]">
+            <div className="flex-1 overflow-y-auto bg-[var(--color-card)] p-5 md:p-7 scroll-smooth text-[var(--color-text-primary)]">
               {/* Personality Tab */}
               {activeTab === 'personality' && (
                 <div className="space-y-8">
@@ -777,7 +777,7 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
           </div>
 
           {/* Footer */}
-          <div className="px-4 md:px-8 py-5 bg-gray-50/80 dark:bg-black/40 border-t border-gray-100 dark:border-white/[0.05] flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0 backdrop-blur-md shrink-0">
+          <div className="px-5 md:px-7 py-4.5 bg-[var(--color-bg)]/85 border-t border-[var(--color-border)] flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0 backdrop-blur-md shrink-0">
             <div className="flex items-center gap-2 order-2 md:order-1">
               <div className="w-2 h-2 rounded-full bg-green-500 shadow-sm shadow-green-500/20" />
               <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">System Synchronized</span>
@@ -785,7 +785,7 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
             <div className="flex items-center gap-3 order-1 md:order-2 w-full md:w-auto">
               <button
                 onClick={onClose}
-                className="flex-1 md:flex-none text-xs font-bold text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white px-4 transition-colors"
+                className="flex-1 md:flex-none text-xs font-bold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] px-4 transition-colors"
               >
                 Cancel
               </button>
@@ -865,3 +865,4 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
     </>
   );
 }
+
