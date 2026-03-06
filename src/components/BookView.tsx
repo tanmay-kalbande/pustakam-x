@@ -1202,31 +1202,21 @@ const HomeView = ({
   moduleContextMode: 'full' | 'summary';
 }) => (
   <div
-    className={`flex-1 flex flex-col items-center px-6 pb-12 w-full transition-all duration-500 ${showAdvanced ? 'min-h-screen overflow-y-auto pt-24' : 'h-screen overflow-hidden pt-20'
-      }`}
+    className={`flex-1 flex flex-col items-center w-full px-4 sm:px-6 pb-12 transition-all duration-300 ${showAdvanced ? 'min-h-full pt-10 md:pt-14' : 'min-h-full pt-[clamp(5rem,11vh,8.5rem)]' }`}
     style={{ background: 'var(--color-bg)', fontFamily: 'Rubik, sans-serif' }}
   >
-    {/* Dynamic Spacer — centers content below the fixed 80px header */}
-    <div
-      className="transition-all duration-700 ease-in-out overflow-hidden"
-      style={{
-        height: showAdvanced ? '0' : 'max(8vh, 0px)',
-        minHeight: showAdvanced ? '0' : 0,
-        opacity: showAdvanced ? 0 : 1,
-        flexShrink: 1
-      }}
-    />
-    <div className="w-full max-w-2xl mx-auto animate-subtle-fade">
-      <div className="text-center mb-10">
+    <div className="w-full max-w-3xl mx-auto animate-subtle-fade">
+      <div className="text-center mb-8 md:mb-10">
         <img
           src={theme === 'dark' ? '/white-logo.png' : '/black-logo.png'}
           alt="Pustakam"
-          className="w-16 h-16 mx-auto mb-6"
+          className="w-14 h-14 md:w-16 md:h-16 mx-auto mb-5"
         />
-        <h1 className="text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] tracking-tight leading-tight">
+        <h1 className="text-3xl md:text-5xl font-bold text-[var(--color-text-primary)] tracking-tight leading-[1.1]">
           Your Private<br />
           <span className="text-orange-500">Encyclopedia.</span>
         </h1>
+        <p className="mt-3 text-sm md:text-base text-[var(--color-text-secondary)] max-w-xl mx-auto">Turn any topic into a structured, publication-ready learning book.</p>
       </div>
 
       {/* Glass-effect boxy Input Bar */}
@@ -1299,7 +1289,7 @@ const HomeView = ({
       {/* Advanced Options Dropdown */}
       {showAdvanced && (
         <div
-          className="mt-6 p-6 bg-[var(--color-card)] border border-[var(--color-border)] rounded-2xl shadow-xl"
+          className="mt-5 p-5 md:p-6 bg-[var(--color-card)]/95 border border-[var(--color-border)] rounded-2xl shadow-[0_20px_45px_-32px_rgba(0,0,0,0.8)]"
           style={{
             animation: 'dropdownSlideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
             transformOrigin: 'top center'
@@ -1558,15 +1548,15 @@ const BookListGrid = ({
   };
 
   return (
-    <div className="h-screen flex flex-col" style={{ background: 'var(--color-bg)', fontFamily: 'Rubik, sans-serif' }}>
+    <div className="min-h-full flex flex-col" style={{ background: 'var(--color-bg)', fontFamily: 'Rubik, sans-serif' }}>
       {/* Fixed Header */}
-      <div className="flex-shrink-0 w-full sticky top-0 z-40 bg-[var(--color-bg)] pb-6 pt-6 px-8 lg:px-12 transition-colors duration-300">
+      <div className="flex-shrink-0 w-full sticky top-0 z-30 bg-[var(--color-bg)]/90 backdrop-blur-lg border-b border-[var(--color-border)] px-4 sm:px-6 lg:px-8 py-4 transition-colors duration-300">
         <div className="flex items-center justify-between">
           <div>
             {/* Title moved to TopHeader */}
-            <p className="text-gray-500 text-sm">{books.length} {books.length === 1 ? 'project' : 'projects'}</p>
+            <p className="text-sm text-[var(--color-text-secondary)]">{books.length} {books.length === 1 ? 'project' : 'projects'}</p>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-3">
             {/* Search */}
             <div className="relative">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
@@ -1575,10 +1565,10 @@ const BookListGrid = ({
                 placeholder="Search..."
                 value={searchQuery}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
-                className="w-48 bg-gray-100 dark:bg-white/[0.03] border border-gray-200 dark:border-white/10 rounded-full pl-10 pr-4 py-2 text-sm text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500/50 dark:focus:border-white/20 focus:w-64 transition-all"
+                className="w-44 sm:w-52 md:w-56 bg-[var(--color-card)] border border-[var(--color-border)] rounded-xl pl-10 pr-4 py-2 text-sm text-[var(--color-text-primary)] placeholder-[var(--color-text-secondary)] focus:outline-none focus:border-orange-500/40 transition-all"
               />
             </div>
-            <button onClick={() => setShowListInMain(false)} className="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white border border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 rounded-full transition-all">
+            <button onClick={() => setShowListInMain(false)} className="h-9 px-3 sm:px-4 text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] border border-[var(--color-border)] hover:border-orange-500/30 rounded-xl transition-all">
               <ArrowLeft className="w-4 h-4 inline mr-2" /> Back
             </button>
           </div>
@@ -1587,17 +1577,17 @@ const BookListGrid = ({
 
       {/* Scrollable Content Area */}
       <div className="flex-1 overflow-y-auto">
-        <div className="w-full max-w-[1400px] mx-auto px-8 lg:px-12 pb-10">
+        <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pb-10 pt-5">
           {isListLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {Array.from({ length: 8 }).map((_, i) => (
                 <div
                   key={i}
-                  className={`rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-zinc-900 p-5 skeleton-stagger-${i + 1}`}
+                  className={`rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] p-5 skeleton-stagger-${i + 1}`}
                   style={{ animationFillMode: 'both' }}
                 >
                   {/* Icon skeleton */}
-                  <div className="p-2 rounded-lg bg-gray-100 dark:bg-white/5 w-fit mb-3">
+                  <div className="p-2 rounded-lg bg-[var(--color-bg)] border border-[var(--color-border)] w-fit mb-3">
                     <div className="w-4 h-4 rounded skeleton-shimmer" />
                   </div>
                   {/* Title skeleton */}
@@ -1650,7 +1640,7 @@ const BookListGrid = ({
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {filteredBooks.map((book) => {
                 const completedModules = book.modules.filter((m) => m.status === 'completed').length;
                 const totalModules = book.modules.length;
@@ -1661,7 +1651,7 @@ const BookListGrid = ({
                     onMouseEnter={() => setHoveredBookId(book.id)}
                     onMouseLeave={() => setHoveredBookId(null)}
                     onClick={() => onSelectBook(book.id)}
-                    className="group relative bg-white dark:bg-zinc-900 rounded-xl border border-gray-200 dark:border-white/5 p-5 transition-all duration-200 cursor-pointer hover:border-indigo-500/20 hover:shadow-lg hover:shadow-indigo-500/5 shadow-sm"
+                    className="group relative bg-[var(--color-card)] rounded-2xl border border-[var(--color-border)] p-5 transition-all duration-200 cursor-pointer hover:border-orange-500/30 hover:shadow-[0_24px_48px_-34px_rgba(0,0,0,0.85)]"
                   >
                     {/* Delete button - appears on hover */}
                     <button
@@ -1678,20 +1668,20 @@ const BookListGrid = ({
                     {(() => {
                       const Icon = getBookIcon(book.title);
                       return (
-                        <div className="p-2 rounded-lg bg-gray-100 dark:bg-white/5 w-fit mb-3">
+                        <div className="p-2 rounded-lg bg-[var(--color-bg)] border border-[var(--color-border)] w-fit mb-3">
                           <Icon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                         </div>
                       );
                     })()}
 
                     {/* Title */}
-                    <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-4 line-clamp-2 leading-snug" style={{ fontFamily: 'Rubik, sans-serif' }}>
+                    <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-4 line-clamp-2 leading-snug" style={{ fontFamily: 'Rubik, sans-serif' }}>
                       {book.title}
                     </h3>
 
                     {/* Stats - Clean chips */}
                     <div className="flex flex-wrap gap-2 mb-4">
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gray-100 dark:bg-white/5 text-[10px] font-medium text-gray-500 dark:text-gray-400">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[var(--color-bg)] border border-[var(--color-border)] text-[10px] font-medium text-[var(--color-text-secondary)]">
                         <FileText size={10} />
                         {totalModules} modules
                       </span>
@@ -1699,7 +1689,7 @@ const BookListGrid = ({
                         const wordCount = book.modules.reduce((acc, m) => acc + (m.wordCount || 0), 0) || book.totalWords || 0;
                         if (wordCount === 0) return null;
                         return (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gray-100 dark:bg-white/5 text-[10px] font-medium text-gray-500 dark:text-gray-400">
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[var(--color-bg)] border border-[var(--color-border)] text-[10px] font-medium text-[var(--color-text-secondary)]">
                             <Sparkles size={10} />
                             {wordCount.toLocaleString()} words
                           </span>
@@ -1708,9 +1698,9 @@ const BookListGrid = ({
                     </div>
 
                     {/* Footer */}
-                    <div className="flex items-center justify-between text-[10px] font-medium text-gray-400 dark:text-gray-500">
+                    <div className="flex items-center justify-between text-[10px] font-medium text-[var(--color-text-secondary)]">
                       <span>{new Date(book.updatedAt).toLocaleDateString()}</span>
-                      <span className="opacity-0 group-hover:opacity-100 transition-opacity text-indigo-500 dark:text-gray-400">
+                      <span className="opacity-0 group-hover:opacity-100 transition-opacity text-orange-500">
                         Open →
                       </span>
                     </div>
@@ -2456,8 +2446,8 @@ export function BookView({
     const isPaused = generationStatus?.status === 'paused';
 
     return (
-      <div className="min-h-[calc(100vh-48px)]" style={{ background: 'var(--color-bg)', fontFamily: 'Rubik, sans-serif' }}>
-        <div className="w-full max-w-3xl mx-auto px-6 py-10">
+      <div className="min-h-full" style={{ background: 'var(--color-bg)', fontFamily: 'Rubik, sans-serif' }}>
+        <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
           <div className="mb-8">
             <button
               onClick={() => {
@@ -2465,14 +2455,14 @@ export function BookView({
                 onSelectBook(null);
                 setShowListInMain(true);
               }}
-              className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors mb-5"
+              className="inline-flex items-center gap-2 text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors mb-5"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to My Books
             </button>
-            <h1 className="text-3xl font-bold text-[var(--color-text-primary)] mb-1.5">{currentBook.title}</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] mb-1.5 tracking-tight">{currentBook.title}</h1>
             <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1.5 text-sm font-medium text-gray-500 dark:text-gray-400">
+              <div className="flex items-center gap-1.5 text-sm font-medium text-[var(--color-text-secondary)]">
                 {getStatusIcon(currentBook.status)}
                 {getStatusText(currentBook.status)}
               </div>
@@ -2480,7 +2470,7 @@ export function BookView({
           </div>
 
           {currentBook.status === 'completed' && (
-            <div className="border-b border-gray-200 dark:border-white/10 mb-8">
+            <div className="border-b border-[var(--color-border)] mb-7">
               <div className="flex items-center gap-6">
                 <DetailTabButton
                   label="Overview"
@@ -2552,7 +2542,7 @@ export function BookView({
                   !isGenerating &&
                   !isPaused &&
                   generationStatus?.status !== 'waiting_retry' && (
-                    <div className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-lg p-7">
+                    <div className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-2xl p-6">
                       <div className="flex items-center gap-4 mb-5">
                         <div className="w-10 h-10 flex items-center justify-center bg-gray-500/10 rounded-lg">
                           <Play className="w-5 h-5 text-gray-400" />
@@ -2604,7 +2594,7 @@ export function BookView({
                   !localIsGenerating &&
                   !isGenerating &&
                   !isPaused && (
-                    <div className="bg-[var(--color-card)] border border-green-500/30 rounded-lg p-7 space-y-5 animate-fade-in-up">
+                    <div className="bg-[var(--color-card)] border border-green-500/30 rounded-2xl p-6 space-y-5 animate-fade-in-up">
                       <div className="text-center">
                         <div className="w-12 h-12 flex items-center justify-center bg-green-500/10 rounded-full mx-auto mb-3">
                           <CheckCircle className="w-7 h-7 text-green-400" />
@@ -2622,7 +2612,7 @@ export function BookView({
                   )}
 
                 {currentBook.status === 'assembling' && (
-                  <div className="bg-[var(--color-card)] backdrop-blur-xl border-2 border-[var(--color-border)] rounded-lg p-8 space-y-6 animate-assembling-glow text-center">
+                  <div className="bg-[var(--color-card)] backdrop-blur-xl border-2 border-[var(--color-border)] rounded-2xl p-7 space-y-6 animate-assembling-glow text-center">
                     <div className="relative w-14 h-14 mx-auto">
                       <div className="absolute inset-0 bg-green-500/20 rounded-full animate-ping"></div>
                       <div className="relative w-14 h-14 flex items-center justify-center bg-green-500/10 rounded-full">
@@ -2642,7 +2632,7 @@ export function BookView({
                 )}
 
                 {currentBook.status === 'completed' && detailTab === 'overview' && (
-                  <div className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-lg p-7">
+                  <div className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-2xl p-6">
                     <div className="flex items-center gap-3 mb-5">
                       <div className="w-10 h-10 flex items-center justify-center bg-gray-500/10 rounded-lg">
                         <Download className="w-5 h-5 text-gray-400" />
@@ -2661,7 +2651,7 @@ export function BookView({
                       <button
                         onClick={handleDownloadPdf}
                         disabled={pdfProgress > 0 && pdfProgress < 100}
-                        className="flex items-center justify-between p-4 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-lg hover:border-gray-400 transition-all group disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex items-center justify-between p-4 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl hover:border-orange-500/40 transition-all group disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 flex items-center justify-center bg-gray-500/10 rounded-lg">
@@ -2694,7 +2684,7 @@ export function BookView({
                             URL.revokeObjectURL(url);
                           }
                         }}
-                        className="flex items-center justify-between p-4 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-lg hover:border-green-500 transition-all group"
+                        className="flex items-center justify-between p-4 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl hover:border-green-500/50 transition-all group"
                       >
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 flex items-center justify-center bg-green-500/10 rounded-lg">
@@ -2729,7 +2719,7 @@ export function BookView({
                 )}
 
                 {!currentBook.roadmap && currentBook.status === 'generating_roadmap' && (
-                  <div className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-lg p-7">
+                  <div className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-2xl p-6">
                     <div className="flex items-center gap-3 mb-5">
                       <ListChecks className="w-5 h-5 text-purple-400" />
                       <h3 className="text-lg font-bold text-[var(--color-text-primary)]">Learning Roadmap</h3>
@@ -2749,7 +2739,7 @@ export function BookView({
                 )}
 
                 {currentBook.roadmap && (
-                  <div className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-lg p-7">
+                  <div className="bg-[var(--color-card)] border border-[var(--color-border)] rounded-2xl p-6">
                     <div className="flex items-center gap-3 mb-5">
                       <ListChecks className="w-5 h-5 text-purple-400" />
                       <h3 className="text-lg font-bold text-[var(--color-text-primary)]">Learning Roadmap</h3>
@@ -2814,3 +2804,4 @@ export function BookView({
   }
   return null;
 }
+
