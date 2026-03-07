@@ -662,11 +662,11 @@ const LandingPage = ({
       )}
 
       {/* Header - UPDATED: Gradient background fixed and mobile height reduced */}
-      <header className="fixed top-0 left-0 right-0 z-50 px-6 py-2.5 md:py-6 flex items-center justify-between gap-4 pointer-events-none bg-gradient-to-b from-black via-black/80 to-transparent pb-6" style={{ paddingTop: 'calc(env(safe-area-inset-top) + 0.625rem)' }}>
+      <header className="fixed top-0 left-0 right-0 z-50 px-5 md:px-6 py-2.5 md:py-4 flex items-center justify-between gap-4 pointer-events-none border-b border-white/10 bg-gradient-to-b from-black/95 via-black/75 to-transparent backdrop-blur-md pb-5" style={{ paddingTop: 'calc(env(safe-area-inset-top) + 0.625rem)' }}>
         <div className="flex items-center gap-2 cursor-pointer group pointer-events-auto select-none" onClick={() => handleTabChange('home')}>
           <img src="/white-logo.png" alt="Pustakam AI Logo" className="w-[33px] h-[33px] md:w-8 md:h-8 opacity-90 transition-opacity group-hover:opacity-100" />
           <span className="text-white/90 font-bold text-[16px] md:text-xl tracking-tight group-hover:text-white transition-colors">
-            Pustakam<span className="text-white/40 group-hover:text-white/60 transition-colors">AI</span>
+            Pustakam<span className="text-white/40 group-hover:text-white/60 transition-colors"> X</span>
           </span>
         </div>
 
@@ -679,7 +679,7 @@ const LandingPage = ({
           </button>
         </div>
 
-        <nav className="hidden md:flex pointer-events-auto items-center p-1.5 bg-white/[0.03] rounded-full border border-white/5 backdrop-blur-md shadow-lg relative mx-auto">
+        <nav className="hidden md:flex pointer-events-auto items-center p-1.5 bg-white/[0.05] rounded-full border border-white/10 backdrop-blur-xl shadow-[0_18px_40px_-26px_rgba(0,0,0,0.7)] relative mx-auto">
           {[
             { id: 'home', label: 'Home' },
             { id: 'process', label: 'How it Works' },
@@ -706,8 +706,8 @@ const LandingPage = ({
           ))}
         </nav>
 
-        <div className="hidden md:flex pointer-events-auto items-center gap-4">
-          <button onClick={onLogin} className="text-[11px] font-medium tracking-wide opacity-50 hover:opacity-100 transition-opacity uppercase">Login</button>
+        <div className="hidden md:flex pointer-events-auto items-center gap-3.5">
+          <button onClick={onLogin} className="text-[11px] font-semibold tracking-[0.12em] text-white/60 hover:text-white transition-colors uppercase">Login</button>
           <button
             onClick={onGetStarted}
             className="bg-white text-black px-6 py-2.5 rounded-full text-[11px] font-bold tracking-widest uppercase hover:bg-white/90 transition-all shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] hover:scale-105 active:scale-95"
@@ -863,11 +863,11 @@ const LandingPage = ({
           </div>
 
           {/* Footer */}
-          <footer className="w-full px-6 py-4 md:py-5 border-t border-white/5 bg-black md:bg-black/80 md:backdrop-blur-xl md:absolute md:bottom-0 md:left-0 md:right-0 z-50">
+          <footer className="w-full px-6 py-4 md:py-5 border-t border-white/10 bg-gradient-to-t from-black/95 via-black/88 to-black/70 md:backdrop-blur-xl md:absolute md:bottom-0 md:left-0 md:right-0 z-50">
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 md:gap-3">
               <div className="flex items-center gap-4 text-[10px] md:text-[11px] font-medium tracking-wide meta-secondary uppercase">
-                <span>© {new Date().getFullYear()} PustakamAI</span>
-                <span className="hidden md:inline">•</span>
+                <span>(c) {new Date().getFullYear()} Pustakam X</span>
+                <span className="hidden md:inline">|</span>
                 <span>Tanmay Kalbande</span>
               </div>
 
@@ -907,4 +907,5 @@ const LandingPage = ({
 };
 
 export default LandingPage;
+
 

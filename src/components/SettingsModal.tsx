@@ -256,13 +256,13 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
 
   return (
     <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm" onClick={onClose}>
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-sm" onClick={onClose}>
         <div
-          className="relative w-full max-w-5xl bg-[var(--color-card)] border border-[var(--color-border)] rounded-3xl shadow-[0_32px_80px_-35px_rgba(0,0,0,0.8)] flex flex-col h-[90vh] md:h-[680px] overflow-hidden"
+          className="relative w-full max-w-5xl bg-[var(--color-bg)] border border-[var(--color-border)] rounded-3xl shadow-[0_32px_80px_-35px_rgba(0,0,0,0.8)] flex flex-col h-[90vh] md:h-[680px] overflow-hidden"
           onClick={e => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="px-5 md:px-7 py-4.5 flex items-center justify-between border-b border-[var(--color-border)] shrink-0 bg-[var(--color-card)]/95">
+          <div className="px-5 md:px-7 py-4.5 flex items-center justify-between border-b border-[var(--color-border)] shrink-0 bg-[var(--color-bg)]">
             <div className="flex items-center gap-3">
               <Settings size={18} className="text-gray-400" />
               <h2 className="text-sm md:text-base font-semibold tracking-tight text-[var(--color-text-primary)]">Settings</h2>
@@ -277,7 +277,7 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
 
           <div className="flex flex-1 overflow-hidden flex-col md:flex-row">
             {/* Sidebar with Nebula visual cues */}
-            <div className={`w-full md:w-[290px] border-b md:border-b-0 md:border-r flex flex-col backdrop-blur-md transition-colors overflow-hidden ${theme === 'light' ? 'bg-[var(--color-bg)] border-[var(--color-border)]' : 'bg-[var(--color-bg)] border-[var(--color-border)]'}`}>
+            <div className="w-full md:w-[290px] border-b md:border-b-0 md:border-r flex flex-col transition-colors overflow-hidden bg-[var(--color-bg)] border-[var(--color-border)]">
               <div className="p-4 md:p-6 flex md:flex-col overflow-x-auto md:overflow-y-auto md:overflow-x-hidden items-center md:items-start whitespace-nowrap md:whitespace-normal custom-scrollbar flex-1">
                 <div className="flex items-center gap-2 mb-0 md:mb-8 mr-6 md:mr-0 shrink-0">
                   <div className="w-1.5 md:w-2 h-6 md:h-8 bg-gradient-to-b from-orange-500 to-amber-500 rounded-full" />
@@ -305,26 +305,26 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
                 </nav>
 
                 {/* New Resource Center Section in Sidebar */}
-                <div className="hidden md:block mt-12 pt-8 border-t border-gray-100 dark:border-white/[0.05] w-full">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-4 px-4">Resource Center</p>
+                <div className="hidden md:block mt-12 pt-8 border-t border-[var(--color-border)] w-full">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-[var(--color-text-secondary)] mb-4 px-4">Resource Center</p>
                   <div className="space-y-1">
                     <button
                       onClick={onOpenAPIDocs}
-                      className="w-full flex items-center gap-3 px-4 py-2 text-xs font-bold text-gray-500 hover:text-orange-500 transition-colors"
+                      className="w-full flex items-center gap-3 px-4 py-2 text-xs font-bold text-[var(--color-text-secondary)] hover:text-orange-500 transition-colors"
                     >
                       <BookMarked size={14} />
                       API Setup
                     </button>
                     <button
                       onClick={onOpenUsageGuide}
-                      className="w-full flex items-center gap-3 px-4 py-2 text-xs font-bold text-gray-500 hover:text-orange-500 transition-colors"
+                      className="w-full flex items-center gap-3 px-4 py-2 text-xs font-bold text-[var(--color-text-secondary)] hover:text-orange-500 transition-colors"
                     >
                       <Info size={14} />
                       Usage Guide
                     </button>
                     <button
                       onClick={onOpenCompliance}
-                      className="w-full flex items-center gap-3 px-4 py-2 text-xs font-bold text-gray-500 hover:text-orange-500 transition-colors"
+                      className="w-full flex items-center gap-3 px-4 py-2 text-xs font-bold text-[var(--color-text-secondary)] hover:text-orange-500 transition-colors"
                     >
                       <Shield size={14} />
                       Compliance
@@ -340,7 +340,7 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
                 >
                   <div className="flex items-center gap-3">
                     {theme === 'light' ? <Sun size={18} className="text-amber-500" /> : <Moon size={18} className="text-purple-400" />}
-                    <span className="text-sm font-bold text-gray-700 dark:text-gray-300 capitalize">{theme} Mode</span>
+                    <span className="text-sm font-bold text-[var(--color-text-primary)] capitalize">{theme} Mode</span>
                   </div>
                   <div className={`w-8 h-4 rounded-full relative transition-colors ${theme === 'dark' ? 'bg-orange-500' : 'bg-gray-200'}`}>
                     <div className={`absolute top-1 w-2 h-2 rounded-full bg-white transition-all ${theme === 'dark' ? 'left-5' : 'left-1'}`} />
@@ -350,7 +350,7 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
             </div>
 
             {/* Content Area - Responsive width */}
-            <div className="flex-1 overflow-y-auto bg-[var(--color-card)] p-5 md:p-7 scroll-smooth text-[var(--color-text-primary)]">
+            <div className="flex-1 overflow-y-auto bg-[var(--color-bg)] p-5 md:p-7 scroll-smooth text-[var(--color-text-primary)]">
               {/* Personality Tab */}
               {activeTab === 'personality' && (
                 <div className="space-y-8">
@@ -777,10 +777,10 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
           </div>
 
           {/* Footer */}
-          <div className="px-5 md:px-7 py-4.5 bg-[var(--color-bg)]/85 border-t border-[var(--color-border)] flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0 backdrop-blur-md shrink-0">
+          <div className="px-5 md:px-7 py-4.5 bg-[var(--color-bg)] border-t border-[var(--color-border)] flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0 shrink-0">
             <div className="flex items-center gap-2 order-2 md:order-1">
               <div className="w-2 h-2 rounded-full bg-green-500 shadow-sm shadow-green-500/20" />
-              <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">System Synchronized</span>
+              <span className="text-[10px] font-bold text-[var(--color-text-secondary)] uppercase tracking-widest">System Synchronized</span>
             </div>
             <div className="flex items-center gap-3 order-1 md:order-2 w-full md:w-auto">
               <button
@@ -803,8 +803,8 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
 
       {/* Import Preview Modal */}
       {showImportModal && importPreview && (
-        <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
-          <div className="bg-white dark:bg-[#0a0a0f] border border-[var(--color-border)] rounded-2xl shadow-2xl w-full max-w-md p-8">
+        <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/65 backdrop-blur-sm">
+          <div className="bg-[var(--color-bg)] border border-[var(--color-border)] rounded-2xl shadow-2xl w-full max-w-md p-8">
             <header className="mb-6">
               <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1 flex items-center gap-2">
                 <AlertTriangle className="text-orange-500" size={20} />
@@ -865,4 +865,6 @@ export function SettingsModal({ isOpen, onClose, settings, onSaveSettings, theme
     </>
   );
 }
+
+
 

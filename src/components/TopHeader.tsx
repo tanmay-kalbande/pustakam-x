@@ -125,7 +125,7 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
 
     return (
         <header
-            className={`fixed inset-x-0 top-0 z-50 border-b backdrop-blur-xl transition-colors duration-200 ${theme === 'light' ? 'border-black/10 bg-white/90' : 'border-white/10 bg-black/70'}`}
+            className={`top-header-shell fixed inset-x-0 top-0 z-50 border-b backdrop-blur-xl transition-colors duration-300 ${theme === 'light' ? 'border-black/10 bg-white/88' : 'border-white/12 bg-[#050505]/78'}`}
             style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
         >
             <div className="mx-auto flex h-[var(--header-height)] w-full max-w-[1440px] items-center gap-2 px-4 md:px-8">
@@ -323,3 +323,5 @@ export const TopHeader: React.FC<TopHeaderProps> = ({
         </header>
     );
 };
+
+
