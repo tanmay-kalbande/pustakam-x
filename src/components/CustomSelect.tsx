@@ -1,5 +1,4 @@
-// src/components/CustomSelect.tsx
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ChevronDown, Check } from 'lucide-react';
 
 interface Option {
@@ -14,10 +13,10 @@ interface CustomSelectProps {
   placeholder?: string;
 }
 
-export function CustomSelect({ options, value, onChange, placeholder = "Select..." }: CustomSelectProps) {
+export function CustomSelect({ options, value, onChange, placeholder = 'Select...' }: CustomSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef<HTMLDivElement>(null);
-  const selectedOption = options.find(opt => opt.value === value);
+  const selectedOption = options.find((option) => option.value === value);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -25,6 +24,7 @@ export function CustomSelect({ options, value, onChange, placeholder = "Select..
         setIsOpen(false);
       }
     };
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
@@ -38,35 +38,37 @@ export function CustomSelect({ options, value, onChange, placeholder = "Select..
     <div className="relative w-full" ref={selectRef}>
       <button
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
-        className="input-style flex items-center justify-between w-full text-left"
+        onClick={() => setIsOpen((open) => !open)}
+        className="input-style flex min-h-[44px] items-center justify-between gap-3 text-left"
       >
-        <span className={selectedOption ? 'text-white' : 'text-gray-400'}>
+        <span className={selectedOption ? 'text-[var(--color-text-primary)]' : 'text-[var(--color-text-secondary)]'}>
           {selectedOption?.label || placeholder}
         </span>
         <ChevronDown
           size={16}
-          className={`text-gray-400 transition-transform duration-200 ${isOpen ? 'transform rotate-180' : ''}`}
+          className={`shrink-0 text-[var(--color-text-secondary)] transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
         />
       </button>
 
       {isOpen && (
-        <div className="absolute z-10 w-full mt-2 bg-[var(--color-card)] border border-[var(--color-border)] rounded-lg shadow-lg animate-fade-in max-h-60 overflow-y-auto">
-          <ul className="p-1">
-            {options.map(option => (
-              <li
-                key={option.value}
-                onClick={() => handleSelect(option.value)}
-                className={`flex items-center justify-between p-2 text-sm rounded-md cursor-pointer transition-colors ${
-                  value === option.value
-                    ? 'bg-orange-500/20 text-orange-300'
-                    : 'text-gray-200 hover:bg-white/5'
-                }`}
-              >
-                <span>{option.label}</span>
-                {value === option.value && <Check size={16} className="text-orange-300" />}
-              </li>
-            ))}
+        <div className="absolute z-20 mt-2 w-full overflow-hidden rounded-2xl border border-[var(--glass-border)] bg-[color:var(--glass-bg-strong)] shadow-[var(--shadow-strong)] backdrop-blur-xl animate-fade-in">
+          <ul className="max-h-60 overflow-y-auto p-1.5">
+            {options.map((option) => {
+              const isSelected = value === option.value;
+              return (
+                <li
+                  key={option.value}
+                  onClick={() => handleSelect(option.value)}
+                  className={`flex cursor-pointer items-center justify-between rounded-xl px-3 py-2.5 text-sm transition-colors ${isSelected
+                    ? 'bg-orange-500/12 text-orange-400'
+                    : 'text-[var(--color-text-primary)] hover:bg-[var(--surface-2)]'
+                  }`}
+                >
+                  <span>{option.label}</span>
+                  {isSelected && <Check size={16} className="text-orange-400" />}
+                </li>
+              );
+            })}
           </ul>
         </div>
       )}
